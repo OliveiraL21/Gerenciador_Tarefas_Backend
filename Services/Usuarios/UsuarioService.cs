@@ -1,7 +1,9 @@
-﻿using Data.Context;
+﻿using AutoMapper;
+using Data.Context;
 using Domain.Entidades;
 using Domain.Services.Usuarios;
 using FluentResults;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +14,23 @@ namespace Services.Usuarios
 {
     public class UsuarioService : IUsuarioService
     {
-        private readonly MyContext _context;
-        public UsuarioService(MyContext context) 
+        private readonly UserManager<IdentityUser<int>> _userManager;
+        private readonly IMapper _mapper;
+        public UsuarioService(IMapper mapper, UserManager<IdentityUser<int>> userManager) 
         {
-            _context= context;
+           _mapper = mapper;
+           _userManager = userManager;
         }
 
         public Result createUsuario(Usuario usuario)
         {
-            throw new NotImplementedException();
+            IdentityUser<int> user = _mapper.Map<IdentityUser<int>>(usuario);
+            var result = _userManager.CreateAsync(user, usuario.Password);
+            if (result.Result.Succeeded)
+            {
+                return Result.Ok();
+            }
+            return Result.Fail("Erro ao tentar cadastrar o usuário");
         }
     }
 }
