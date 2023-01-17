@@ -20,7 +20,8 @@ using UserApplication.Context;
 namespace UserApplication
 {
     public class Startup
-    {
+    {   
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,11 +33,25 @@ namespace UserApplication
         public void ConfigureServices(IServiceCollection services)
         {
 
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
             services.AddControllers();
             services.AddDbContext<UserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("UserConnection")));
             services.AddIdentity<IdentityUser<int>, IdentityRole<int>>().AddEntityFrameworkStores<UserDbContext>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddTransient<IUsuarioService, UsuarioService>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.AllowAnyOrigin();
+                                      policy.AllowAnyHeader();
+                                      policy.AllowAnyMethod();
+                                      
+                                  });
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UserApplication", Version = "v1" });
@@ -46,18 +61,20 @@ namespace UserApplication
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UserApplication v1"));
             }
-
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
+          
 
             app.UseEndpoints(endpoints =>
             {

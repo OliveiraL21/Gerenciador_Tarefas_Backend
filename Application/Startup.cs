@@ -41,7 +41,7 @@ namespace Application
 
             services.AddControllers();
             services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Controle_TarefasDB")));
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
        
             #region Services
             services.AddTransient<IClienteService, ClienteService>();

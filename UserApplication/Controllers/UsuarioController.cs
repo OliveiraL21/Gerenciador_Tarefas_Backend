@@ -27,6 +27,12 @@ namespace UserApplication.Controllers
                 }
 
                 var result = _usuarioService.createUsuario(usuario);
+
+                if(result.IsFailed)
+                {
+                    return BadRequest(result);
+                }
+
                 return Ok(result);
             }
             catch (Exception ex)

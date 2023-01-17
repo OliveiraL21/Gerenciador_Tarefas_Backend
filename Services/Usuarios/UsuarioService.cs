@@ -30,7 +30,7 @@ namespace Services.Usuarios
             {
                 return Result.Ok();
             }
-            return Result.Fail("Erro ao tentar cadastrar o usuário");
+            return Result.Fail($"Erro ao tentar cadastrar o usuário");
         }
     }
 }
