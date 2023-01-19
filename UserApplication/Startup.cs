@@ -1,3 +1,4 @@
+using Domain.Services.Login;
 using Domain.Services.Usuarios;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Services.Login;
 using Services.Usuarios;
 using System;
 using System.Collections.Generic;
@@ -40,6 +42,7 @@ namespace UserApplication
             services.AddIdentity<IdentityUser<int>, IdentityRole<int>>().AddEntityFrameworkStores<UserDbContext>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddTransient<IUsuarioService, UsuarioService>();
+            services.AddTransient<ILoginService, LoginService>();
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
