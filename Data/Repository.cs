@@ -65,6 +65,7 @@ namespace Data
                 if(origin != null)
                 {
                     _context.Entry(origin).CurrentValues.SetValues(entity);
+                    _context.SaveChanges();
                     return  entity;
                 }
             }

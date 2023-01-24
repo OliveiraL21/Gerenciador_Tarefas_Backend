@@ -32,8 +32,16 @@ namespace Application.Controllers
                     var result = new List<ProjetoListagemDTO>();
                     foreach (var projeto in projetos)
                     {
-                        var projetoDTO = _mapper.Map<ProjetoListagemDTO>(projeto);
-                        result.Add(projetoDTO);
+                        var projetoResult = new ProjetoListagemDTO() {
+                            Id = projeto.Id,
+                            Descricao = projeto.Descricao,
+                            Data_Inicio = projeto.DataInicio,
+                            Data_Fim = projeto.DataFim,
+                            status = projeto.Status.Descricao,
+                            Cliente = projeto.Cliente.RazaoSocial
+                        };
+
+                        result.Add(projetoResult);
                     }
                     if (result == null)
                     {

@@ -9,12 +9,12 @@ namespace Application.DTO.Projetos
 
         public string Descricao { get; set; }
 
-        public Status status { get; set; }
+        public string status { get; set; }
 
         public DateTime Data_Inicio { get; set; }
 
         public DateTime Data_Fim { get; set; }
 
-        public Cliente Cliente { get; set; }
+        public string Cliente { get; set; }
     }
 }

@@ -38,7 +38,7 @@ namespace Application
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
             services.AddControllers();
             services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Controle_TarefasDB")));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -52,9 +52,25 @@ namespace Application
 
             #region Repository
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-          
+
             #endregion
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.AllowAnyOrigin();
+                                      policy.AllowAnyHeader();
+                                      policy.AllowAnyMethod();
+
+                                  });
+            });
+
+            services.AddControllersWithViews()
+            .AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             services.AddSwaggerGen(c =>
             {
@@ -65,6 +81,7 @@ namespace Application
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -77,6 +94,7 @@ namespace Application
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseEndpoints(endpoints =>
             {

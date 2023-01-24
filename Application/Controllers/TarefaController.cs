@@ -111,7 +111,7 @@ namespace Application.Controllers
                 var duracao = periodoFim.Add(-periodoInicial);
                 var result = new
                 {
-                    Duracao = duracao,
+                    Duracao = duracao.ToString(),
                 };
 
                 return Ok(result);
@@ -188,7 +188,8 @@ namespace Application.Controllers
                     return BadRequest(ModelState);
                 }
 
-
+                tarefaDto.horarioFim = tarefaDto.horarioFim.Substring(11, 5);
+                tarefaDto.horarioInicio = tarefaDto.horarioInicio.Substring(11, 5);
                 var tarefa = _mapper.Map<Tarefa>(tarefaDto);
                 var result = this._tarefaService.insert(tarefa);
 
@@ -217,6 +218,8 @@ namespace Application.Controllers
                 }
 
                 tarefaDto.Id = id;
+                tarefaDto.horarioFim = tarefaDto.horarioFim.Substring(11, 5);
+                tarefaDto.horarioInicio = tarefaDto.horarioInicio.Substring(11, 5);
                 var tarefa = _mapper.Map<Tarefa>(tarefaDto);
                 var result = _tarefaService.update(tarefa);
 
