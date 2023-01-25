@@ -56,7 +56,7 @@ namespace Services.Projetos
             }
             else
             {
-                var projetos = _context.Projetos.Include(x => x.Status).Include(c => c.Cliente).Where(x => x.StatusId == 1).ToList();
+                var projetos = _context.Projetos.Include(x => x.Status).Include(c => c.Cliente).ToList();
                 return projetos;
             }
         }
@@ -64,7 +64,7 @@ namespace Services.Projetos
         public List<Projeto> GetAll()
         {
 
-            var projetos = _context.Projetos.Include(x => x.Status).Include(c => c.Cliente).Where(x => x.StatusId == 1).ToList();
+            var projetos = _context.Projetos.Include(x => x.Status).Include(c => c.Cliente).ToList();
             return projetos;
         }
 

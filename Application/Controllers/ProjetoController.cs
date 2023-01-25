@@ -35,10 +35,10 @@ namespace Application.Controllers
                         var projetoResult = new ProjetoListagemDTO() {
                             Id = projeto.Id,
                             Descricao = projeto.Descricao,
-                            Data_Inicio = projeto.DataInicio,
-                            Data_Fim = projeto.DataFim,
-                            status = projeto.Status.Descricao,
-                            Cliente = projeto.Cliente.RazaoSocial
+                            Data_Inicio = projeto.DataInicio.ToString("dd/MM/yyyy"),
+                            Data_Fim = projeto.DataFim.ToString("dd/MM/yyyy"),
+                            status = projeto.Status,
+                            Cliente = projeto.Cliente
                         };
 
                         result.Add(projetoResult);
@@ -102,9 +102,18 @@ namespace Application.Controllers
 
                     foreach (var item in projetos)
                     {
-                        var projetoDTO = _mapper.Map<ProjetoListagemDTO>(item);
 
-                        result.Add(projetoDTO);
+                    var projetoDTO = new ProjetoListagemDTO()
+                    {
+                        Id = item.Id,
+                        Descricao = item.Descricao,
+                        Data_Inicio = item.DataInicio.ToString("dd/MM/yyyy"),
+                        Data_Fim = item.DataFim.ToString("dd/MM/yyyy"),
+                        status = item.Status,
+                        Cliente = item.Cliente
+                    };
+
+                    result.Add(projetoDTO);
                     }
 
                     if (result == null)
@@ -151,7 +160,7 @@ namespace Application.Controllers
 
             [HttpPut]
             [Route("/projeto/update/{id}")]
-            public IActionResult update(int id, [FromBody] Projeto projeto)
+            public IActionResult update(int id, [FromBody] UpdateProjetoDTO projetoDto)
             {
                 try
                 {
@@ -161,8 +170,8 @@ namespace Application.Controllers
 
                     }
 
-                    projeto.Id = id;
-                    projeto.StatusId = 1;
+                    projetoDto.Id = id;
+                    var projeto = _mapper.Map<Projeto>(projetoDto);
                     var result = _projetoService.update(projeto);
 
                     if (result == null)

@@ -3,17 +3,17 @@ using System;
 
 namespace Application.DTO.Projetos
 {
-    public class ProjetoListagemDTO
+    public class UpdateProjetoDTO
     {
         public int Id { get; set; }
 
         public string Descricao { get; set; }
 
-        public Status status { get; set; }
+        public string DataInicio { get; set; }
 
-        public string Data_Inicio { get; set; }
+        public string DataFim { get; set; }
 
-        public string Data_Fim { get; set; }
+        public Status Status { get; set; }
 
         public Cliente Cliente { get; set; }
     }

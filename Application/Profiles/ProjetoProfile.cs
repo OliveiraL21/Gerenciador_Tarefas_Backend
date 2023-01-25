@@ -11,6 +11,8 @@ namespace Application.Profiles
             CreateMap<Projeto, ProjetoListagemDTO>();
             CreateMap<ProjetoListagemDTO, Projeto>();
             CreateMap<Projeto, ProjetoListagemSimplesDTO>();
+            CreateMap<Projeto, UpdateProjetoDTO>();
+            CreateMap<UpdateProjetoDTO, Projeto>();
         }
     }
 }
