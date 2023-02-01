@@ -5,11 +5,11 @@ namespace Domain.Entidades
     public class Tarefa : BaseEntity
     {
 
-        public TimeSpan HorarioInicio { get; set; }
+        public DateTime HorarioInicio { get; set; }
 
-        public TimeSpan HorarioFim { get; set; }
+        public DateTime HorarioFim { get; set; }
 
-        public TimeSpan Duracao { get; set; }
+        public DateTime Duracao { get; set; }
 
         public DateTime Data { get; set; }
 
