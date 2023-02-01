@@ -43,6 +43,9 @@ namespace UserApplication
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddTransient<IUsuarioService, UsuarioService>();
             services.AddTransient<ILoginService, LoginService>();
+            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<ILogoutService, LogoutService>();
+
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
