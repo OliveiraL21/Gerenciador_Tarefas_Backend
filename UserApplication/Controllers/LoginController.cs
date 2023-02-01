@@ -28,12 +28,13 @@ namespace UserApplication.Controllers
 
                 var result = _loginService.Login(login);
 
+
                 if(result.IsFailed)
                 {
-                    return BadRequest(result);
+                    return Unauthorized(result.Errors);
                 }
 
-                return Ok(result);
+                return Ok(result.Successes);
 
                
             }

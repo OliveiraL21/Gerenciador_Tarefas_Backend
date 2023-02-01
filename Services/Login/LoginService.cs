@@ -14,10 +14,12 @@ namespace Services.Login
     {
         // declarando gerenciador de login
         private SignInManager<IdentityUser<int>> _signManager;
+        private ITokenService _tokenService;
 
-        public LoginService(SignInManager<IdentityUser<int>> signManager)
+        public LoginService(SignInManager<IdentityUser<int>> signManager, ITokenService tokenService)
         {
             _signManager = signManager;
+            _tokenService = tokenService;
         }
 
         public Result Login(LoginRequest login)
@@ -26,7 +28,13 @@ namespace Services.Login
             {
                 var result = _signManager.PasswordSignInAsync(login.Username, login.Password, false, false);
                 if (result.Result.Succeeded)
-                    return Result.Ok();
+                {
+                    var identityUser = _signManager.UserManager.Users.FirstOrDefault(user => user.NormalizedUserName == login.Username.ToUpper());
+                    Token token = _tokenService.gerarToken(identityUser);
+                    return Result.Ok().WithSuccess(token.Value);
+
+                }
+                   
             }
             return Result.Fail("Erro ao tentar realizer o login, tente novamente mais tarde");
         }
