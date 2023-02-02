@@ -10,6 +10,7 @@ namespace Domain.Services.Usuarios
 {
     public interface IUsuarioService
     {
+        Result ativaUsuario(AtivaRequest request);
         Result createUsuario(Usuario usuario);
 
     }

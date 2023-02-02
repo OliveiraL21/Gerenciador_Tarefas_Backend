@@ -16,7 +16,6 @@ namespace UserApplication.Controllers
         }
 
         [HttpPost]
-        [Route("Logout")]
         public IActionResult Logout()
         {
             try
