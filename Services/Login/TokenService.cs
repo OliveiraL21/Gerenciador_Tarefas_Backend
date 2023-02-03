@@ -22,7 +22,7 @@ namespace Services.Login
                 new Claim("id", identityUser.Id.ToString()),
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(""));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("0asdjas09djsa09djasdjsadajsd09asjd09sajcnzxn"));
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
