@@ -14,12 +14,13 @@ namespace Services.Login
 {
     public class TokenService : ITokenService
     {
-        public Token gerarToken(IdentityUser<int> identityUser)
+        public Token gerarToken(IdentityUser<int> identityUser, string role)
         {
             Claim[] direitos = new Claim[]
             {
                 new Claim ("username", identityUser.UserName),
                 new Claim("id", identityUser.Id.ToString()),
+                new Claim("Role", role)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("0asdjas09djsa09djasdjsadajsd09asjd09sajcnzxn"));

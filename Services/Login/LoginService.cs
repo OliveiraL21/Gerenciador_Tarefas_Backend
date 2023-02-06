@@ -26,11 +26,12 @@ namespace Services.Login
         {
             if(login != null)
             {
+                
                 var result = _signManager.PasswordSignInAsync(login.Username, login.Password, false, false);
                 if (result.Result.Succeeded)
                 {
                     var identityUser = _signManager.UserManager.Users.FirstOrDefault(user => user.NormalizedUserName == login.Username.ToUpper());
-                    Token token = _tokenService.gerarToken(identityUser);
+                    Token token = _tokenService.gerarToken(identityUser, _signManager.UserManager.GetRolesAsync(identityUser).Result.FirstOrDefault());
                     return Result.Ok().WithSuccess(token.Value);
 
                 }

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net;
 using System;
 using Domain.Services.Tarefas;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Application.Controllers
 {
@@ -26,6 +27,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("filtrar/{descricao}/{dataInicio}/{dataFim}/{projetoId}")]
+        [Authorize(Roles = "admin")]
         public IActionResult Filtrar(string? descricao, string? dataInicio, string? dataFim, int? projetoId)
         {
             try
@@ -58,6 +60,7 @@ namespace Application.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult listarTarefas()
         {
             try
@@ -93,6 +96,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("duracao/{horarioInicio}/{horarioFim}")]
+        [Authorize(Roles = "admin")]
         public IActionResult calcularDuracao(string horarioInicio, string horarioFim)
         {
             try
@@ -124,6 +128,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("horasTotais/{data}")]
+        [Authorize(Roles = "admin")]
         public IActionResult calcularTotaisHoras(DateTime data)
         {
             try
@@ -154,6 +159,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("detalhes_tarefas/{id}")]
+        [Authorize(Roles = "admin")]
         public IActionResult details(int id)
         {
             try
@@ -179,6 +185,7 @@ namespace Application.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult createTarefa([FromBody] CreateTarefaDTO tarefaDto)
         {
             try
@@ -207,6 +214,7 @@ namespace Application.Controllers
 
         [HttpPut]
         [Route("update_tarefas/{id}")]
+        [Authorize(Roles = "admin")]
         public IActionResult updateTarefa(int id, [FromBody] UpdateTarefaDTO tarefaDto)
         {
             try
@@ -237,6 +245,7 @@ namespace Application.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "admin")]
         public IActionResult ExcluirTarefa(int id)
         {
             try

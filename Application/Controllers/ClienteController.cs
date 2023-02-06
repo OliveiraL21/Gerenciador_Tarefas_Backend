@@ -6,6 +6,7 @@ using System.Net;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Application.Controllers
 {
@@ -22,6 +23,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("/filtrar/{razaoSocial}/{cnpj}/{email}")]
+        [Authorize(Roles = "admin")]
         public IActionResult filtrar(string razaoSocial, string cnpj, string email)
         {
             try
@@ -48,6 +50,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("/lista")]
+        [Authorize(Roles = "admin")]
         public IActionResult listaClientes()
         {
             try
@@ -71,6 +74,7 @@ namespace Application.Controllers
 
         [HttpPost]
         [Route("/create")]
+        [Authorize(Roles = "admin")]
         public IActionResult create([FromBody] Cliente cliente)
         {
             try
@@ -96,6 +100,7 @@ namespace Application.Controllers
 
         [HttpPut]
         [Route("/update/{id}")]
+        [Authorize(Roles = "admin")]
         public IActionResult update(int id, [FromBody] Cliente cliente)
         {
             try
@@ -124,6 +129,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("/details/{id}")]
+        [Authorize(Roles = "admin")]
         public IActionResult details(int id)
         {
             var result = _clienteService.select(id);
@@ -137,6 +143,7 @@ namespace Application.Controllers
 
         [HttpDelete]
         [Route("/delete/{id}")]
+        [Authorize(Roles = "admin")]
         public IActionResult delete(int id)
         {
             try

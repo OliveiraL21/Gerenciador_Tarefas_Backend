@@ -17,13 +17,15 @@ namespace Services.Usuarios
     public class UsuarioService : IUsuarioService
     {
         private readonly UserManager<IdentityUser<int>> _userManager;
+        private readonly RoleManager<IdentityRole<int>> _roleManager;
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
 
-        public UsuarioService(IMapper mapper, UserManager<IdentityUser<int>> userManager, IEmailService emailService) 
+        public UsuarioService(IMapper mapper, UserManager<IdentityUser<int>> userManager, RoleManager<IdentityRole<int>> roleManager , IEmailService emailService) 
         {
            _mapper = mapper;
            _userManager = userManager;
+            _roleManager = roleManager;
             _emailService = emailService;
         }
 
@@ -46,7 +48,13 @@ namespace Services.Usuarios
         public Result createUsuario(Usuario usuario)
         {
             IdentityUser<int> user = _mapper.Map<IdentityUser<int>>(usuario);
+
             var result = _userManager.CreateAsync(user, usuario.Password);
+
+            var role = _roleManager.CreateAsync(new IdentityRole<int>("admin")).Result;
+
+            var usuarioRole = _userManager.AddToRoleAsync(user, "admin");
+
             if (result.Result.Succeeded)
             {
                 var code = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
