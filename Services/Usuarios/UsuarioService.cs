@@ -51,9 +51,7 @@ namespace Services.Usuarios
 
             var result = _userManager.CreateAsync(user, usuario.Password);
 
-            var role = _roleManager.CreateAsync(new IdentityRole<int>("admin")).Result;
-
-            var usuarioRole = _userManager.AddToRoleAsync(user, "admin");
+            var usuarioRole = _userManager.AddToRoleAsync(user, "regular");
 
             if (result.Result.Succeeded)
             {

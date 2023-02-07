@@ -27,7 +27,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("filtrar/{descricao}/{dataInicio}/{dataFim}/{projetoId}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult Filtrar(string? descricao, string? dataInicio, string? dataFim, int? projetoId)
         {
             try
@@ -60,7 +60,7 @@ namespace Application.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult listarTarefas()
         {
             try
@@ -96,7 +96,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("duracao/{horarioInicio}/{horarioFim}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult calcularDuracao(string horarioInicio, string horarioFim)
         {
             try
@@ -128,7 +128,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("horasTotais/{data}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult calcularTotaisHoras(DateTime data)
         {
             try
@@ -159,7 +159,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("detalhes_tarefas/{id}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult details(int id)
         {
             try
@@ -185,7 +185,7 @@ namespace Application.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult createTarefa([FromBody] CreateTarefaDTO tarefaDto)
         {
             try
@@ -214,7 +214,7 @@ namespace Application.Controllers
 
         [HttpPut]
         [Route("update_tarefas/{id}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult updateTarefa(int id, [FromBody] UpdateTarefaDTO tarefaDto)
         {
             try
@@ -245,7 +245,7 @@ namespace Application.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult ExcluirTarefa(int id)
         {
             try

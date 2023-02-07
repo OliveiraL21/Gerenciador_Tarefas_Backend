@@ -23,7 +23,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("/filtrar/{razaoSocial}/{cnpj}/{email}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult filtrar(string razaoSocial, string cnpj, string email)
         {
             try
@@ -50,7 +50,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("/lista")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult listaClientes()
         {
             try
@@ -74,7 +74,7 @@ namespace Application.Controllers
 
         [HttpPost]
         [Route("/create")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult create([FromBody] Cliente cliente)
         {
             try
@@ -100,7 +100,7 @@ namespace Application.Controllers
 
         [HttpPut]
         [Route("/update/{id}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult update(int id, [FromBody] Cliente cliente)
         {
             try
@@ -129,7 +129,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("/details/{id}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult details(int id)
         {
             var result = _clienteService.select(id);
@@ -143,7 +143,7 @@ namespace Application.Controllers
 
         [HttpDelete]
         [Route("/delete/{id}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult delete(int id)
         {
             try

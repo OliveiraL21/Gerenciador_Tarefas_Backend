@@ -25,7 +25,7 @@ namespace Application.Controllers
 
             [HttpGet]
             [Route("/lista/projetos")]
-            [Authorize(Roles = "admin")]
+            [Authorize(Roles = "admin, regular")]
         public IActionResult Lista()
             {
                 try
@@ -59,7 +59,7 @@ namespace Application.Controllers
 
             [HttpGet]
             [Route("/lista_simples")]
-            [Authorize(Roles = "admin")]
+            [Authorize(Roles = "admin, regular")]
             public IActionResult listaSimples()
             {
                 try
@@ -91,7 +91,7 @@ namespace Application.Controllers
 
             [HttpGet]
             [Route("filtrar_projetos/{projeto}/{cliente}/{status}")]
-            [Authorize(Roles = "admin")]
+            [Authorize(Roles = "admin, regular")]
             public IActionResult Filtrar(int? projeto, int? cliente, int? status)
             {
                 try
@@ -135,7 +135,7 @@ namespace Application.Controllers
 
             [HttpPost]
             [Route("/projeto/create")]
-            [Authorize(Roles = "admin")]
+            [Authorize(Roles = "admin, regular")]
             public IActionResult create([FromBody] Projeto projeto)
             {
                 try
@@ -165,7 +165,7 @@ namespace Application.Controllers
 
             [HttpPut]
             [Route("/projeto/update/{id}")]
-            [Authorize(Roles = "admin")]
+            [Authorize(Roles = "admin, regular")]
             public IActionResult update(int id, [FromBody] UpdateProjetoDTO projetoDto)
             {
                 try
@@ -195,7 +195,7 @@ namespace Application.Controllers
 
             [HttpGet]
             [Route("/projeto/details/{id}")]
-            [Authorize(Roles = "admin")]
+            [Authorize(Roles = "admin, regular")]
             public IActionResult details(int id)
             {
                 try
@@ -222,7 +222,7 @@ namespace Application.Controllers
             }
             [HttpDelete]
             [Route("/projeto/delete/{id}")]
-            [Authorize(Roles = "admin")]
+            [Authorize(Roles = "admin, regular")]
             public IActionResult delete(int id)
             {
                 try
