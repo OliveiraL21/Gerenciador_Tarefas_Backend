@@ -13,7 +13,7 @@ namespace Services.Login
     public class LoginService : ILoginService
     {
         // declarando gerenciador de login
-        private SignInManager<IdentityUser<int>> _signManager;
+        private readonly SignInManager<IdentityUser<int>> _signManager;
         private ITokenService _tokenService;
 
         public LoginService(SignInManager<IdentityUser<int>> signManager, ITokenService tokenService)
@@ -31,7 +31,8 @@ namespace Services.Login
                 if (result.Result.Succeeded)
                 {
                     var identityUser = _signManager.UserManager.Users.FirstOrDefault(user => user.NormalizedUserName == login.Username.ToUpper());
-                    Token token = _tokenService.gerarToken(identityUser, _signManager.UserManager.GetRolesAsync(identityUser).Result.FirstOrDefault());
+                    var role = _signManager.UserManager.GetRolesAsync(identityUser).Result.FirstOrDefault();
+                    Token token = _tokenService.gerarToken(identityUser,role );
                     return Result.Ok().WithSuccess(token.Value);
 
                 }

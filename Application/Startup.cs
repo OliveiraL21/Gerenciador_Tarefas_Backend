@@ -75,23 +75,27 @@ namespace Application
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("0asdjas09djsa09djasdjsadajsd09asjd09sajcnzxn"));
+
             services.AddAuthentication(auth =>
             {
                 auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(token =>
             {
-                token.RequireHttpsMetadata = true;
+                token.RequireHttpsMetadata = false;
                 token.SaveToken = true;
                 token.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("0asdjas09djsa09djasdjsadajsd09asjd09sajcnzxn")),
+                    IssuerSigningKey = key,
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     ClockSkew = TimeSpan.Zero
                 };
             });
+
+            
 
             services.AddSwaggerGen(c =>
             {
@@ -115,7 +119,9 @@ namespace Application
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
+
             app.UseCors(MyAllowSpecificOrigins);
 
             app.UseEndpoints(endpoints =>

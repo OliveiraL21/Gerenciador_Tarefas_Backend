@@ -17,16 +17,15 @@ namespace Services.Usuarios
     public class UsuarioService : IUsuarioService
     {
         private readonly UserManager<IdentityUser<int>> _userManager;
-        private readonly RoleManager<IdentityRole<int>> _roleManager;
+       
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
 
-        public UsuarioService(IMapper mapper, UserManager<IdentityUser<int>> userManager, RoleManager<IdentityRole<int>> roleManager , IEmailService emailService) 
+        public UsuarioService(IMapper mapper, UserManager<IdentityUser<int>> userManager, IEmailService emailService) 
         {
            _mapper = mapper;
            _userManager = userManager;
-            _roleManager = roleManager;
-            _emailService = emailService;
+           _emailService = emailService;
         }
 
         public Result ativaUsuario(AtivaRequest request)
@@ -45,16 +44,17 @@ namespace Services.Usuarios
             return Result.Fail("Erro ao tentar ativar a conta do usuário");
         }
 
-        public Result createUsuario(Usuario usuario)
+        public  Result createUsuario(Usuario usuario)
         {
             IdentityUser<int> user = _mapper.Map<IdentityUser<int>>(usuario);
 
-            var result = _userManager.CreateAsync(user, usuario.Password);
-
-            var usuarioRole = _userManager.AddToRoleAsync(user, "regular");
+            Task<IdentityResult> result = _userManager.CreateAsync(user, usuario.Password);
+            
 
             if (result.Result.Succeeded)
             {
+                _userManager.AddToRoleAsync(user, "regular");
+
                 var code = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
 
                 var destinatario = new List<Destinatario>

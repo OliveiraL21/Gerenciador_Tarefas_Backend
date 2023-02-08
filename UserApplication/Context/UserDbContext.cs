@@ -39,7 +39,7 @@ namespace UserApplication.Context
                     {
                         Id = 99999,
                         Name = "admin",
-                        NormalizedName = "admin",
+                        NormalizedName = "ADMIN",
                     }
                 );
 
@@ -48,7 +48,7 @@ namespace UserApplication.Context
               {
                   Id = 99997,
                   Name = "regular",
-                  NormalizedName = "regular",
+                  NormalizedName = "REGULAR",
               }
           );
 

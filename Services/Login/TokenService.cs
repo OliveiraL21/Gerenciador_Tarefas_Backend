@@ -20,7 +20,7 @@ namespace Services.Login
             {
                 new Claim ("username", identityUser.UserName),
                 new Claim("id", identityUser.Id.ToString()),
-                new Claim("Role", role)
+                new Claim(ClaimTypes.Role, role)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("0asdjas09djsa09djasdjsadajsd09asjd09sajcnzxn"));
