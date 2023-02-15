@@ -33,13 +33,15 @@ namespace UserApplication.Controllers
 
                 var result = _loginService.Login(login);
 
+             
 
-                if(result.IsFailed)
+
+                if(result == null)
                 {
-                    return Unauthorized(result.Errors);
+                    return Unauthorized(result);
                 }
 
-                return Ok(result.Reasons);
+                return Ok(result);
 
                
             }

@@ -22,7 +22,7 @@ namespace Services.Login
             _tokenService = tokenService;
         }
 
-        public Result Login(LoginRequest login)
+        public ResultToken Login(LoginRequest login)
         {
             if(login != null)
             {
@@ -33,12 +33,18 @@ namespace Services.Login
                     var identityUser = _signManager.UserManager.Users.FirstOrDefault(user => user.NormalizedUserName == login.Username.ToUpper());
                     var role = _signManager.UserManager.GetRolesAsync(identityUser).Result.FirstOrDefault();
                     Token token = _tokenService.gerarToken(identityUser,role );
-                    return Result.Ok().WithSuccess(token.Value);
+
+                    ResultToken tokenResult = new ResultToken();
+
+                    tokenResult.Token = token.Value;
+                    tokenResult.UsuarioId = identityUser.Id;
+
+                    return tokenResult;
 
                 }
                    
             }
-            return Result.Fail("Erro ao tentar realizer o login, tente novamente mais tarde");
+            return null;
         }
 
         public Result Logout(LoginRequest login)

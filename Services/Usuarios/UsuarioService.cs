@@ -70,6 +70,29 @@ namespace Services.Usuarios
             }
             return Result.Fail($"Erro ao tentar cadastrar o usuário");
         }
+
+        public Usuario detaillsUsuario(int id)
+        {
+            var user = _userManager.Users.FirstOrDefault(u => u.Id == id);
+
+            var result = _mapper.Map<Usuario>(user);
+
+            return result;
+        }
+
+        public Result update(Usuario usuario)
+        {
+            IdentityUser<int> user = _mapper.Map<IdentityUser<int>>(usuario);
+
+            var result = _userManager.UpdateAsync(user);
+
+            if (result.Result.Succeeded)
+            {
+                return Result.Ok();
+            }
+
+            return Result.Fail("Erro ao tentar atualizar o usuário");
+        }
     }
 
 }

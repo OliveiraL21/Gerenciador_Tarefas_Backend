@@ -75,6 +75,8 @@ namespace Application.Controllers
 
                 foreach (var tarefa in tarefas)
                 {
+                    tarefa.HorarioInicio = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(tarefa.HorarioInicio), "E. South America Standard Time");
+                    tarefa.HorarioFim = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(tarefa.HorarioFim), "E. South America Standard Time");
                     var tarefaDTO = _mapper.Map<TarefaListagemDTO>(tarefa);
                     result.Add(tarefaDTO);
                 }
@@ -191,7 +193,8 @@ namespace Application.Controllers
                     return BadRequest(ModelState);
                 }
 
-              
+                tarefaDto.horarioInicio = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(tarefaDto.horarioInicio), "E. South America Standard Time");
+                tarefaDto.horarioFim = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(tarefaDto.horarioFim), "E. South America Standard Time");
                 var tarefa = _mapper.Map<Tarefa>(tarefaDto);
                 var result = this._tarefaService.insert(tarefa);
 
@@ -220,8 +223,9 @@ namespace Application.Controllers
                 }
 
                 tarefaDto.Id = id;
-               
-  
+                tarefaDto.horarioInicio = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(tarefaDto.horarioInicio), "E. South America Standard Time");
+                tarefaDto.horarioFim = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(tarefaDto.horarioFim), "E. South America Standard Time");
+
                 var tarefa = _mapper.Map<Tarefa>(tarefaDto);
                 var result = _tarefaService.update(tarefa);
 
