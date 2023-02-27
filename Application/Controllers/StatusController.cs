@@ -5,6 +5,7 @@ using System;
 using Domain.Entidades;
 using Application.DTO.StatusDTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Application.Controllers
 {
@@ -23,6 +24,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("listaStatus")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult listaTodos()
         {
             try
@@ -50,6 +52,7 @@ namespace Application.Controllers
 
         [HttpPost]
         [Route("createStatus")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult create([FromBody] CreateStatusDto statusDTO)
         {
             try
@@ -76,6 +79,7 @@ namespace Application.Controllers
 
         [HttpPut]
         [Route("updateStatus")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult update([FromBody] Status status)
         {
             try
@@ -101,6 +105,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("detalhes_status/{id}")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult details(int id)
         {
             try
@@ -127,6 +132,7 @@ namespace Application.Controllers
 
         [HttpDelete]
         [Route("delete_status/{id}")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult delete(int id)
         {
             try

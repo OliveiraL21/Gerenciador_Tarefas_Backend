@@ -4,14 +4,16 @@ using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20230209172751_alterando horarios para date time offset")]
+    partial class alterandohorariosparadatetimeoffset
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,21 +117,21 @@ namespace Data.Migrations
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Data")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("Data")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Duracao")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("Duracao")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime>("HorarioFim")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("HorarioFim")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime>("HorarioInicio")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("HorarioInicio")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Observacao")
                         .HasColumnType("nvarchar(max)");

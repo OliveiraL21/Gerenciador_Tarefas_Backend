@@ -12,6 +12,8 @@ namespace Domain.Services.Usuarios
     {
         Result ativaUsuario(AtivaRequest request);
         Result createUsuario(Usuario usuario);
+        Result update(Usuario usuario);
+        Usuario detaillsUsuario(int id);
 
     }
 }

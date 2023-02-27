@@ -12,6 +12,6 @@ namespace Domain.Services.Login
 {
     public interface ITokenService
     {
-      Token  gerarToken(IdentityUser<int> identityUser);
+      Token  gerarToken(IdentityUser<int> identityUser, string role);
     }
 }

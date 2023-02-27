@@ -4,6 +4,7 @@ using Domain.Repository;
 using Domain.Services.Clientes;
 using Domain.Services.Projetos;
 using Domain.Services.Tarefas;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,7 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Services.Clientes;
 using Services.Projetos;
@@ -24,6 +25,7 @@ using Services.Tarefas;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Application
@@ -44,6 +46,7 @@ namespace Application
             services.AddControllers();
             services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Controle_TarefasDB")));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+           
 
             #region Services
             services.AddTransient<IClienteService, ClienteService>();
@@ -73,6 +76,28 @@ namespace Application
             .AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("0asdjas09djsa09djasdjsadajsd09asjd09sajcnzxn"));
+
+            services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(token =>
+            {
+                token.RequireHttpsMetadata = false;
+                token.SaveToken = true;
+                token.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
+            
 
             services.AddSwaggerGen(c =>
             {
@@ -104,18 +129,16 @@ namespace Application
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
+
             app.UseCors(MyAllowSpecificOrigins);
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
-            //var timeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
-            
-            
-
         }
     }
 }

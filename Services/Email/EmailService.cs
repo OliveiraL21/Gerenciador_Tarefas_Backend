@@ -59,10 +59,13 @@ namespace Services.Email
             mensagemEmail.From.Add(new MailboxAddress("Gerenciador de Tarefas", From));
             mensagemEmail.To.AddRange(mensagem.Destinatario);
             mensagemEmail.Subject = mensagem.Assunto.ToString();
+
             mensagemEmail.Body = new TextPart(MimeKit.Text.TextFormat.Text)
             {
                 Text = mensagem.Conteudo
             };
+
+            
 
             return mensagemEmail;
         }

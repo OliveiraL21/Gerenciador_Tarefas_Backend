@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UserApplication.Context;
 
 namespace UserApplication.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230207134012_usuario admin role")]
+    partial class usuarioadminrole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,16 +74,16 @@ namespace UserApplication.Migrations
                         new
                         {
                             Id = 99999,
-                            ConcurrencyStamp = "04fc6dd6-088d-4409-af1b-b9732298315e",
+                            ConcurrencyStamp = "0fcd8107-95ac-4393-8d4e-0d2304faad26",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
                             Id = 99997,
-                            ConcurrencyStamp = "254e0cea-e3bf-49ff-ab42-391bac3f3252",
+                            ConcurrencyStamp = "0aec494e-323a-4cca-8b71-1ddf84c1299a",
                             Name = "regular",
-                            NormalizedName = "REGULAR"
+                            NormalizedName = "regular"
                         });
                 });
 
@@ -179,15 +181,15 @@ namespace UserApplication.Migrations
                         {
                             Id = 99999,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d5bfa6cb-bd28-4701-b13f-dabcad28959e",
+                            ConcurrencyStamp = "07bf357e-5b08-48a3-84c9-5c6aff9b34eb",
                             Email = "admin",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOuf5lAt6J/CS/6TW+A8eejiYBxNQu1kJd8Wwt6WiDv/2q8N5T9kLE/UZBSGNCfJcQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGsxyamI0LEFbEHMMOusBCmHrNndJzvfZFAqelmu0rq2UBGIGV4DhRcYitZAiChXrw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6fc66866-c3c6-43de-a1ca-c10955c900ef",
+                            SecurityStamp = "fa31261a-64f2-4558-8a6f-bf1f47ff1e07",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

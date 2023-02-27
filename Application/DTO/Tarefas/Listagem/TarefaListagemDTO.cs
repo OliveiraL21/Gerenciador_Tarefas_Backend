@@ -10,9 +10,9 @@ namespace Application.DTO.Tarefas.Listagem
 
         public DateTime Data { get; set; }
 
-        public string HorarioInicio { get; set; }
+        public DateTime HorarioInicio { get; set; }
 
-        public string HorarioFim { get; set; }
+        public DateTime HorarioFim { get; set; }
 
         public string Duracao { get; set; }
 

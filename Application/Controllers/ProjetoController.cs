@@ -6,6 +6,7 @@ using System.Net;
 using System;
 using AutoMapper;
 using Application.DTO.Projetos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Application.Controllers
 {
@@ -24,7 +25,8 @@ namespace Application.Controllers
 
             [HttpGet]
             [Route("/lista/projetos")]
-            public IActionResult Lista()
+            [Authorize(Roles = "admin, regular")]
+        public IActionResult Lista()
             {
                 try
                 {
@@ -57,6 +59,7 @@ namespace Application.Controllers
 
             [HttpGet]
             [Route("/lista_simples")]
+            [Authorize(Roles = "admin, regular")]
             public IActionResult listaSimples()
             {
                 try
@@ -88,6 +91,7 @@ namespace Application.Controllers
 
             [HttpGet]
             [Route("filtrar_projetos/{projeto}/{cliente}/{status}")]
+            [Authorize(Roles = "admin, regular")]
             public IActionResult Filtrar(int? projeto, int? cliente, int? status)
             {
                 try
@@ -131,6 +135,7 @@ namespace Application.Controllers
 
             [HttpPost]
             [Route("/projeto/create")]
+            [Authorize(Roles = "admin, regular")]
             public IActionResult create([FromBody] Projeto projeto)
             {
                 try
@@ -160,6 +165,7 @@ namespace Application.Controllers
 
             [HttpPut]
             [Route("/projeto/update/{id}")]
+            [Authorize(Roles = "admin, regular")]
             public IActionResult update(int id, [FromBody] UpdateProjetoDTO projetoDto)
             {
                 try
@@ -189,6 +195,7 @@ namespace Application.Controllers
 
             [HttpGet]
             [Route("/projeto/details/{id}")]
+            [Authorize(Roles = "admin, regular")]
             public IActionResult details(int id)
             {
                 try
@@ -215,6 +222,7 @@ namespace Application.Controllers
             }
             [HttpDelete]
             [Route("/projeto/delete/{id}")]
+            [Authorize(Roles = "admin, regular")]
             public IActionResult delete(int id)
             {
                 try

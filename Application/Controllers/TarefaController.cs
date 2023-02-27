@@ -8,12 +8,13 @@ using System.Collections.Generic;
 using System.Net;
 using System;
 using Domain.Services.Tarefas;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Application.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(Roles = "admin, regular")]
     public class TarefaController : ControllerBase
     {
         private readonly ITarefaService _tarefaService;
@@ -59,6 +60,7 @@ namespace Application.Controllers
         }
 
         [HttpGet]
+       
         public IActionResult listarTarefas()
         {
             try
@@ -73,6 +75,8 @@ namespace Application.Controllers
 
                 foreach (var tarefa in tarefas)
                 {
+                    tarefa.HorarioInicio = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(tarefa.HorarioInicio), "E. South America Standard Time");
+                    tarefa.HorarioFim = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(tarefa.HorarioFim), "E. South America Standard Time");
                     var tarefaDTO = _mapper.Map<TarefaListagemDTO>(tarefa);
                     result.Add(tarefaDTO);
                 }

@@ -1,5 +1,7 @@
+using Data.Context;
 using Domain.Services.Email;
 using Domain.Services.Login;
+using Domain.Services.ResetaSenha;
 using Domain.Services.Usuarios;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Services.Email;
 using Services.Login;
+using Services.ResetSenha;
 using Services.Usuarios;
 using System;
 using System.Collections.Generic;
@@ -40,7 +43,8 @@ namespace UserApplication
             var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
             services.AddControllers();
-            services.AddDbContext<UserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("UserConnection")));
+            services.AddTransient<UserDbContext>().AddDbContext<UserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("UserConnection")));
+           
             services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(opt =>
             {
                 opt.SignIn.RequireConfirmedEmail = true;
@@ -53,6 +57,7 @@ namespace UserApplication
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<ILogoutService, LogoutService>();
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IResetaSenha, ResetaSenhaService>();
 
             services.AddCors(options =>
             {
