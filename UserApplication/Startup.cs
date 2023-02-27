@@ -1,3 +1,4 @@
+using Domain.Services.Email;
 using Domain.Services.Login;
 using Domain.Services.Usuarios;
 using Microsoft.AspNetCore.Builder;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Services.Email;
 using Services.Login;
 using Services.Usuarios;
 using System;
@@ -39,10 +41,19 @@ namespace UserApplication
 
             services.AddControllers();
             services.AddDbContext<UserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("UserConnection")));
-            services.AddIdentity<IdentityUser<int>, IdentityRole<int>>().AddEntityFrameworkStores<UserDbContext>();
+            services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(opt =>
+            {
+                opt.SignIn.RequireConfirmedEmail = true;
+
+            }).AddEntityFrameworkStores<UserDbContext>()
+            .AddDefaultTokenProviders();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddTransient<IUsuarioService, UsuarioService>();
             services.AddTransient<ILoginService, LoginService>();
+            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<ILogoutService, LogoutService>();
+            services.AddTransient<IEmailService, EmailService>();
+
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,

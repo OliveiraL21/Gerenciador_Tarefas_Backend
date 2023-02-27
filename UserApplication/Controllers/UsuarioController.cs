@@ -1,5 +1,6 @@
 ﻿using Domain.Entidades;
 using Domain.Services.Usuarios;
+using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net;
@@ -38,6 +39,33 @@ namespace UserApplication.Controllers
             catch (Exception ex)
             {
                 return StatusCode ((int)HttpStatusCode.InternalServerError, ex.Message);    
+            }
+        }
+
+        [HttpGet]
+        [Route("/ativa")]
+        public IActionResult ativa([FromQuery] AtivaRequest request)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                Result result = _usuarioService.ativaUsuario(request);
+
+
+                if (result.IsFailed)
+                {
+                    return StatusCode(500);
+                }
+
+                return Ok(result.Successes);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
     }

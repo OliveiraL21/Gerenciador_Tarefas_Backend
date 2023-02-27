@@ -1,44 +1,41 @@
-﻿using Domain.Entidades;
-using Domain.Services.Login;
+﻿using Domain.Services.Login;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net;
 
 namespace UserApplication.Controllers
 {
-    [ApiController]
     [Route("[controller]")]
-    public class LoginController : ControllerBase
+    [ApiController]
+    public class LogoutController : ControllerBase
     {
-        private readonly ILoginService _loginService;
-        public LoginController(ILoginService loginService)
+        private readonly ILogoutService _logoutService;
+        public LogoutController(ILogoutService logoutService)
         {
-            _loginService = loginService;
+            _logoutService = logoutService;
         }
 
         [HttpPost]
-        public IActionResult Logar (LoginRequest login)
+        public IActionResult Logout()
         {
             try
             {
+
                 if(!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
 
-                var result = _loginService.Login(login);
+                var result = _logoutService.Deslogar();
 
-
-                if(result.IsFailed)
+                if (result.IsFailed)
                 {
                     return Unauthorized(result.Errors);
                 }
 
                 return Ok(result.Successes);
-
-               
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
