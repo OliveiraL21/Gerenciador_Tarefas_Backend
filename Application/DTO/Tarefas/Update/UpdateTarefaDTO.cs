@@ -14,10 +14,10 @@ namespace Application.DTO.Tarefas.Update
         [Required(ErrorMessage = "Campo Obrigatório")]
 
 
-        public DateTime horarioFim { get; set; }
+        public string horarioFim { get; set; }
 
         [Required(ErrorMessage = "Campo Obrigatório")]
-        public DateTime horarioInicio { get; set; }
+        public string horarioInicio { get; set; }
 
         [Required(ErrorMessage = "Campo Obrigatório")]
         public string Duracao { get; set; }

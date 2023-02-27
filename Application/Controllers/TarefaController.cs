@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net;
 using System;
 using Domain.Services.Tarefas;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Application.Controllers
 {
@@ -217,8 +218,8 @@ namespace Application.Controllers
                 }
 
                 tarefaDto.Id = id;
-               
-  
+            
+
                 var tarefa = _mapper.Map<Tarefa>(tarefaDto);
                 var result = _tarefaService.update(tarefa);
 

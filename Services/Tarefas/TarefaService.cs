@@ -15,10 +15,12 @@ namespace Services.Tarefas
     {
         private readonly MyContext _context;
         private readonly IRepository<Tarefa> _tarefaRepository;
-        public TarefaService(MyContext context, IRepository<Tarefa> tarefaRepository)
+        private readonly IRepository<Status> _statusRepository;
+        public TarefaService(MyContext context, IRepository<Tarefa> tarefaRepository, IRepository<Status> statusRepository)
         {
             _context= context;
-            _tarefaRepository= tarefaRepository;
+            _tarefaRepository = tarefaRepository;
+            _statusRepository = statusRepository;
         }
         public string calcularHorasTotais(DateTime data)
         {
@@ -111,7 +113,11 @@ namespace Services.Tarefas
 
         public Tarefa select(int id)
         {
-            return _tarefaRepository.select(id);
+            var tarefa = _tarefaRepository.select(id);
+            var status = _statusRepository.select(tarefa.StatusId);
+            var result = tarefa;
+            result.Status = status;
+            return result;
         }
 
         public Tarefa update(Tarefa entity)
