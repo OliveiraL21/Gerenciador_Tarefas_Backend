@@ -3,6 +3,7 @@ using Domain.Services.Email;
 using Domain.Services.Login;
 using Domain.Services.ResetaSenha;
 using Domain.Services.Usuarios;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Services.Email;
 using Services.Login;
@@ -21,6 +23,7 @@ using Services.Usuarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using UserApplication.Context;
 
@@ -75,6 +78,8 @@ namespace UserApplication
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UserApplication", Version = "v1" });
             });
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,8 +98,9 @@ namespace UserApplication
             app.UseRouting();
 
             app.UseAuthorization();
-          
 
+            app.UseAuthentication();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

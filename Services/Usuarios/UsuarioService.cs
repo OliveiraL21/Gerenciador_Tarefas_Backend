@@ -82,7 +82,11 @@ namespace Services.Usuarios
 
         public Result update(Usuario usuario)
         {
-            IdentityUser<int> user = _mapper.Map<IdentityUser<int>>(usuario);
+            var user = _userManager.Users.FirstOrDefault(u => u.Id == usuario.Id);
+
+            user.PhoneNumber = usuario.PhoneNumber;
+            user.Email = usuario.Email;
+            user.UserName = usuario.Username;
 
             var result = _userManager.UpdateAsync(user);
 

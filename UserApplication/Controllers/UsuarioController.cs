@@ -44,8 +44,7 @@ namespace UserApplication.Controllers
         }
         [HttpPut]
         [Route("update")]
-        [Authorize(Roles = "admin,regular")]
-        public IActionResult updateUsuario([FromBody] Usuario usuario) 
+        public IActionResult updateUsuario([FromBody] Usuario usuario)
         {
             try
             {
@@ -71,7 +70,6 @@ namespace UserApplication.Controllers
 
         [HttpGet]
         [Route("detalhes/{id}")]
-        [Authorize(Roles = "admin, regular")]
         public IActionResult detalhesUsuario (int id)
         {
             try
