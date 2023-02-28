@@ -72,7 +72,7 @@ namespace UserApplication.Controllers
         [HttpGet]
         [Route("detalhes/{id}")]
         [Authorize(Roles = "admin, regular")]
-        public IActionResult detalhesUsuario ( int id)
+        public IActionResult detalhesUsuario (int id)
         {
             try
             {
