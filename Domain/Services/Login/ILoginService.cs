@@ -11,6 +11,5 @@ namespace Domain.Services.Login
     public interface ILoginService
     {
         public ResultToken Login(LoginRequest login);
-        public Result Logout(LoginRequest login);
     }
 }

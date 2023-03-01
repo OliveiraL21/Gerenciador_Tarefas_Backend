@@ -12,22 +12,22 @@ namespace Services.ResetSenha
 {
     public class ResetaSenhaService : IResetaSenha
     {
-        private readonly SignInManager<IdentityUser<int>> _signInManager;
+        private readonly SignInManager<CustomIdentityUser> _signInManager;
 
-        public ResetaSenhaService(SignInManager<IdentityUser<int>>signInManager)
+        public ResetaSenhaService(SignInManager<CustomIdentityUser>signInManager)
         {
             _signInManager = signInManager;
 
         }
 
-        private IdentityUser<int> RecuperaUsuarioEmail (string email)
+        private CustomIdentityUser RecuperaUsuarioEmail (string email)
         {
             return _signInManager.UserManager.Users.FirstOrDefault(u => u.NormalizedEmail == email.ToUpper());
         }
 
         public Result SolicitaResetSenha(SolicitaRedefinicaoRequest redefinicaoRequest)
         {
-            IdentityUser<int> identityUser = RecuperaUsuarioEmail(redefinicaoRequest.Email);
+            CustomIdentityUser identityUser = RecuperaUsuarioEmail(redefinicaoRequest.Email);
 
             var codigo = _signInManager.UserManager.GeneratePasswordResetTokenAsync(identityUser);
 
@@ -40,7 +40,7 @@ namespace Services.ResetSenha
 
         public Result EfetuarResetSenhaUsuario(ResetaSenhaRequest resetSenha)
         {
-            IdentityUser<int> identityUser = RecuperaUsuarioEmail(resetSenha.Email);
+            CustomIdentityUser identityUser = RecuperaUsuarioEmail(resetSenha.Email);
 
             var result = _signInManager.UserManager.ResetPasswordAsync(identityUser, resetSenha.Password, resetSenha.Token).Result;
 

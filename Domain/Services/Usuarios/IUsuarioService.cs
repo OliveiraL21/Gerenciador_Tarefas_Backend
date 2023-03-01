@@ -14,6 +14,6 @@ namespace Domain.Services.Usuarios
         Result createUsuario(Usuario usuario);
         Result update(Usuario usuario);
         Usuario detaillsUsuario(int id);
-
+        Result updateProfileImage(string imageUrl, int id);
     }
 }

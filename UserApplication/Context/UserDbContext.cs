@@ -6,7 +6,7 @@ using System;
 
 namespace UserApplication.Context
 {
-    public class UserDbContext : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>
+    public class UserDbContext : IdentityDbContext<CustomIdentityUser, IdentityRole<int>, int>
     {
         DbSet<Usuario> usuarios { get; set; }
 
@@ -18,7 +18,7 @@ namespace UserApplication.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            IdentityUser<int> admin = new IdentityUser<int>
+            CustomIdentityUser  admin = new CustomIdentityUser()
             {
                 Id = 99999,
                 UserName = "admin",
@@ -27,12 +27,18 @@ namespace UserApplication.Context
                 NormalizedEmail = "admin",
                 EmailConfirmed = true,
                 SecurityStamp = Guid.NewGuid().ToString(),
+                ConcurrencyStamp = "d1f13107-9c43-4221-926d-6d0bdcf012b6",
+                PhoneNumber = null,
+                PhoneNumberConfirmed = false,
+                TwoFactorEnabled = false,
+                LockoutEnabled = false,
+                AccessFailedCount = 0
             };
 
-            PasswordHasher<IdentityUser<int>> hasher = new PasswordHasher<IdentityUser<int>>();
+            PasswordHasher<CustomIdentityUser> hasher = new PasswordHasher<CustomIdentityUser>();
             admin.PasswordHash = hasher.HashPassword(admin, "Admin123@!");
 
-            builder.Entity<IdentityUser<int>>().HasData(admin);
+            builder.Entity<CustomIdentityUser>().HasData(admin);
 
             builder.Entity<IdentityRole<int>>().HasData(
                     new IdentityRole<int>

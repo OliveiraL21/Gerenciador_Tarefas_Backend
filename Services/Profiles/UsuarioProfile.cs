@@ -15,6 +15,8 @@ namespace Services.Profiles
         {
             CreateMap<IdentityUser<int>, Usuario>();
             CreateMap<Usuario, IdentityUser<int>>();
+            CreateMap<Usuario, CustomIdentityUser>();
+            CreateMap<CustomIdentityUser, Usuario>();
         }
     }
 }

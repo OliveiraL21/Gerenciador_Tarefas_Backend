@@ -1,4 +1,5 @@
-﻿using Domain.Services.Login;
+﻿using Domain.Entidades;
+using Domain.Services.Login;
 using FluentResults;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -11,9 +12,9 @@ namespace Services.Login
 {
     public class LogoutService : ILogoutService
     {
-        private SignInManager<IdentityUser<int>> _signinManager;
+        private SignInManager<CustomIdentityUser> _signinManager;
 
-        public LogoutService(SignInManager<IdentityUser<int>>signInManager)
+        public LogoutService(SignInManager<CustomIdentityUser>signInManager)
         {
             _signinManager = signInManager;
         }

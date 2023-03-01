@@ -1,6 +1,5 @@
 ﻿using Domain.Entidades;
 using FluentResults;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,6 @@ namespace Domain.Services.Login
 {
     public interface ITokenService
     {
-      Token  gerarToken(IdentityUser<int> identityUser, string role);
+      Token  gerarToken(CustomIdentityUser identityUser, string role);
     }
 }

@@ -13,10 +13,10 @@ namespace Services.Login
     public class LoginService : ILoginService
     {
         // declarando gerenciador de login
-        private readonly SignInManager<IdentityUser<int>> _signManager;
+        private readonly SignInManager<CustomIdentityUser> _signManager;
         private ITokenService _tokenService;
 
-        public LoginService(SignInManager<IdentityUser<int>> signManager, ITokenService tokenService)
+        public LoginService(SignInManager<CustomIdentityUser> signManager, ITokenService tokenService)
         {
             _signManager = signManager;
             _tokenService = tokenService;
@@ -45,11 +45,6 @@ namespace Services.Login
                    
             }
             return null;
-        }
-
-        public Result Logout(LoginRequest login)
-        {
-            throw new NotImplementedException();
         }
     }
 }

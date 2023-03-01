@@ -1,4 +1,5 @@
 using Data.Context;
+using Domain.Entidades;
 using Domain.Services.Email;
 using Domain.Services.Login;
 using Domain.Services.ResetaSenha;
@@ -48,12 +49,13 @@ namespace UserApplication
             services.AddControllers();
             services.AddTransient<UserDbContext>().AddDbContext<UserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("UserConnection")));
            
-            services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(opt =>
+            services.AddIdentity<CustomIdentityUser, IdentityRole<int>>(opt =>
             {
                 opt.SignIn.RequireConfirmedEmail = true;
 
             }).AddEntityFrameworkStores<UserDbContext>()
             .AddDefaultTokenProviders();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddTransient<IUsuarioService, UsuarioService>();
             services.AddTransient<ILoginService, LoginService>();
@@ -78,8 +80,6 @@ namespace UserApplication
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UserApplication", Version = "v1" });
             });
-
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,7 +100,9 @@ namespace UserApplication
             app.UseAuthorization();
 
             app.UseAuthentication();
-            
+
+            app.UseDeveloperExceptionPage();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
