@@ -3,6 +3,7 @@ using Domain.Services.Login;
 using Domain.Services.ResetaSenha;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Any;
 using Services.ResetSenha;
 using System;
 using System.Net;
@@ -31,23 +32,30 @@ namespace UserApplication.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var result = _loginService.Login(login);
-
-             
-
-
-                if(result == null)
+                var existe = _loginService.UsuarioExiste(login.Username);
+                if (existe)
                 {
-                    return Unauthorized(result);
+                    var result = _loginService.Login(login);
+
+                    if (result != null)
+                    {
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        return Unauthorized(new ErrorHandle() { Error = "Você não tem autorização para acessar esse recurso, contate seu  administrador !" });
+                    }
                 }
-
-                return Ok(result);
-
+                else
+                {
+                    ErrorHandle error = new ErrorHandle() { Error = "Usuário não encontrado na base de dados, por favor tente realizar o cadastro !" };
+                return StatusCode((int)HttpStatusCode.InternalServerError, error );
+                }
                
             }
             catch(Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, new ErrorHandle() {Error = ex.Message });
             }
         }
 
@@ -66,13 +74,13 @@ namespace UserApplication.Controllers
 
                 if (result.IsFailed)
                 {
-                    return Unauthorized(result.Errors);
+                    return Unauthorized(new ErrorHandle() {Error = result.Errors.ToString() });
                 }
 
                 return Ok(result.Successes);
             } catch(Exception ex)
             {
-                return StatusCode((int) HttpStatusCode.InternalServerError, ex.Message);
+                return StatusCode((int) HttpStatusCode.InternalServerError, new ErrorHandle() { Error = ex.Message });
             }
         }
 
@@ -94,12 +102,12 @@ namespace UserApplication.Controllers
                     return Ok(result.Successes);
                 }
 
-                return BadRequest(result.Errors);
+                return BadRequest( new ErrorHandle() { Error = result.Errors.ToString() });
                
             } 
             catch(Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, new ErrorHandle() { Error = ex.Message });
             }
         }
     }

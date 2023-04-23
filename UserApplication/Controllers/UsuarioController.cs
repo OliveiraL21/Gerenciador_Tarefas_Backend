@@ -83,6 +83,7 @@ namespace UserApplication.Controllers
 
                 var result = _usuarioService.detaillsUsuario(id);
 
+
                 if (result == null)
                     return NotFound();
 
@@ -133,7 +134,7 @@ namespace UserApplication.Controllers
         [HttpGet("profilepicture/{fileName}")]
         public IActionResult GetProfilePicture(string fileName)
         {
-            var filePath = Path.Combine(@"C:\\Projetos\\Gerenciador_Tarefas\\backend\\Gerenciador_Tarefas_Backend\\UserApplication\\Imagens\\Usuarios", fileName);
+            var filePath = Path.Combine(@"C:\Projetos\Gerenciador_Tarefas\backend\Gerenciador_Tarefas_Backend\UserApplication\Imagens\Usuarios\", fileName);
 
             if (!System.IO.File.Exists(filePath))
             {

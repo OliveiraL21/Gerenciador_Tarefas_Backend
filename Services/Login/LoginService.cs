@@ -22,11 +22,18 @@ namespace Services.Login
             _tokenService = tokenService;
         }
 
+        public bool UsuarioExiste(string username)
+        {
+            bool exist = _signManager.UserManager.Users.Any(x => x.UserName == username);
+
+            return exist ? exist : false;
+        }
+
         public ResultToken Login(LoginRequest login)
         {
             if(login != null)
             {
-                
+               
                 var result = _signManager.PasswordSignInAsync(login.Username, login.Password, false, false);
                 if (result.Result.Succeeded)
                 {

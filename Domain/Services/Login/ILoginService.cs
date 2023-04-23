@@ -11,5 +11,6 @@ namespace Domain.Services.Login
     public interface ILoginService
     {
         public ResultToken Login(LoginRequest login);
+        public bool UsuarioExiste(string username);
     }
 }

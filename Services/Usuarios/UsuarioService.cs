@@ -90,8 +90,10 @@ namespace Services.Usuarios
             user.PhoneNumber = usuario.PhoneNumber;
             user.Email = usuario.Email;
             user.UserName = usuario.Username;
+            user.ProfileImageUrl = usuario.ProfileImageUrl;
 
             var result = _userManager.UpdateAsync(user);
+
 
             if (result.Result.Succeeded)
             {
@@ -103,8 +105,6 @@ namespace Services.Usuarios
 
         public Result updateProfileImage(string imageUrl, int id)
         {
-       
-
             var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
             user.ProfileImageUrl = imageUrl;
             var result = _userManager.UpdateAsync(user);
