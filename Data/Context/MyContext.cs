@@ -28,7 +28,8 @@ namespace Data.Context
 
        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;database=Controle_Tarefas;Trusted_Connection=true;");
+            //optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;database=Controle_Tarefas;Trusted_Connection=true;");
+            optionsBuilder.UseMySql("Server=localhost;Port=3306;DataBase=GerenciadorTarefasDev;Uid=root;Pwd=Lucas98971@;SSL Mode=None",new MySqlServerVersion(new Version(8, 0, 38)));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

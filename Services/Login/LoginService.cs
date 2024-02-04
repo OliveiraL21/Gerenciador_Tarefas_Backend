@@ -29,11 +29,34 @@ namespace Services.Login
             return exist ? exist : false;
         }
 
-        public ResultToken Login(LoginRequest login)
+        private CustomIdentityUser RecuperaUsuario(string username)
+        {
+            var user = _signManager.UserManager.Users.SingleOrDefault(x => x.UserName == username);
+
+            return user;
+        }
+
+        public bool VerificaSenha(string username, string senha)
+        {
+            if(username != "" && senha != "")
+            {
+                var user = RecuperaUsuario(username);
+
+                if(user != null)
+                {
+                    PasswordHasher<CustomIdentityUser> hasher = new PasswordHasher<CustomIdentityUser>();
+                    var isEqual = hasher.VerifyHashedPassword(user, user.PasswordHash, senha);
+                    return isEqual.ToString() == "Failed" ? false : true; 
+                }
+            }
+            return false;
+        }
+
+        public ResultToken  Login(LoginRequest login)
         {
             if(login != null)
             {
-               
+                
                 var result = _signManager.PasswordSignInAsync(login.Username, login.Password, false, false);
                 if (result.Result.Succeeded)
                 {
@@ -45,6 +68,7 @@ namespace Services.Login
 
                     tokenResult.Token = token.Value;
                     tokenResult.UsuarioId = identityUser.Id;
+                    tokenResult.Authenticated = true;
 
                     return tokenResult;
 

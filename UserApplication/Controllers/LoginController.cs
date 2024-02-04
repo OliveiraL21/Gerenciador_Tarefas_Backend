@@ -35,6 +35,13 @@ namespace UserApplication.Controllers
                 var existe = _loginService.UsuarioExiste(login.Username);
                 if (existe)
                 {
+                    var isCorrectPassword = _loginService.VerificaSenha(login.Username, login.Password);
+
+                    if(isCorrectPassword == false)
+                    {
+                        return StatusCode((int) HttpStatusCode.InternalServerError, new ErrorHandle { Error = "Senha incorreta"});
+                    }
+
                     var result = _loginService.Login(login);
 
                     if (result != null)

@@ -44,7 +44,7 @@ namespace Application
         {
             var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
             services.AddControllers();
-            services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Controle_TarefasDB")));
+            services.AddDbContext<MyContext>(options => options.UseMySql(Configuration.GetConnectionString("Controle_TarefasDB"), new MySqlServerVersion(new Version(8, 0, 38))));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
            
 

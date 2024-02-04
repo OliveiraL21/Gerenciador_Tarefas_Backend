@@ -47,11 +47,12 @@ namespace UserApplication
             var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
             services.AddControllers();
-            services.AddTransient<UserDbContext>().AddDbContext<UserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("UserConnection")));
+            services.AddTransient<UserDbContext>().AddDbContext<UserDbContext>(options => options.UseMySql(Configuration.GetConnectionString("UserConnection"), new MySqlServerVersion(new Version(8,0,38))));
            
             services.AddIdentity<CustomIdentityUser, IdentityRole<int>>(opt =>
             {
                 opt.SignIn.RequireConfirmedEmail = true;
+                opt.User.RequireUniqueEmail = true;
 
             }).AddEntityFrameworkStores<UserDbContext>()
             .AddDefaultTokenProviders();

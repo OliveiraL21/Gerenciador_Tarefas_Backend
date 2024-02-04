@@ -2,6 +2,7 @@
 using Data.Context;
 using Domain.Entidades;
 using Domain.Services.Email;
+using Domain.Services.ResetaSenha;
 using Domain.Services.Usuarios;
 using FluentResults;
 using Microsoft.AspNetCore.Identity;
@@ -23,12 +24,15 @@ namespace Services.Usuarios
        
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
+        private readonly IResetaSenha _resetSenhaService;
 
-        public UsuarioService(IMapper mapper, UserManager<CustomIdentityUser> userManager, IEmailService emailService) 
+
+        public UsuarioService(IMapper mapper, UserManager<CustomIdentityUser> userManager, IEmailService emailService, IResetaSenha resetSenhaService) 
         {
            _mapper = mapper;
            _userManager = userManager;
            _emailService = emailService;
+            _resetSenhaService = resetSenhaService;
         }
 
         public Result ativaUsuario(AtivaRequest request)
@@ -44,12 +48,42 @@ namespace Services.Usuarios
                 return Result.Ok();
             }
 
-            return Result.Fail("Erro ao tentar ativar a conta do usuário");
+            return Result.Fail($"Erro ao tentar ativar a conta do usuário -  {identityResult.Errors.First().Description}");
+        }
+
+        public Result solicitarResetSenha(SolicitaRedefinicaoRequest solicitaRedefinicaoRequest)
+        {
+           return _resetSenhaService.SolicitaResetSenha(solicitaRedefinicaoRequest);
+        }
+
+        public Result EfetuarResetSenha(ResetaSenhaRequest request)
+        {
+            return _resetSenhaService.EfetuarResetSenhaUsuario(request);
+        }
+
+        private bool ExisteUsuarioByEmail(string email)
+        {
+            return _userManager.Users.Any(u => u.Email == email);
+        }
+
+        private bool ExisteUsuarioByUsername(string username)
+        {
+            return _userManager.Users.Any(u => u.UserName == username);
         }
 
         public  Result createUsuario(Usuario usuario)
         {
             CustomIdentityUser user = _mapper.Map<CustomIdentityUser>(usuario);
+
+            if (ExisteUsuarioByEmail(user.Email))
+            {
+                return Result.Fail("O e-mail escolhido já esta em uso por outro usuário");
+            }
+
+            if (ExisteUsuarioByUsername(user.UserName)) 
+            {
+                return Result.Fail("O nome de usuário já esta em uso por outro usuário do sistema");
+            }
 
             Task<IdentityResult> result = _userManager.CreateAsync(user, usuario.Password);
             
@@ -68,7 +102,8 @@ namespace Services.Usuarios
                 var encodeCode = HttpUtility.UrlEncode(code);
 
                 //ENVIAR EMAIL
-                _emailService.EnviarEmail(destinatario, "Código de ativação", user.Id, encodeCode);
+
+                _emailService.EnviarEmail(destinatario, "Código de ativação", user.Id, user.NormalizedUserName, encodeCode, "Ativar Conta" );
                 return Result.Ok().WithSuccess(code);
             }
             return Result.Fail($"Erro ao tentar cadastrar o usuário");
