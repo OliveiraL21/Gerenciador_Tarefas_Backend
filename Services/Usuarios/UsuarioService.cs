@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Data.Context;
+using Domain.Dtos.User;
 using Domain.Entidades;
 using Domain.Services.Email;
 using Domain.Services.ResetaSenha;
@@ -118,14 +119,16 @@ namespace Services.Usuarios
             return result;
         }
 
-        public Result update(Usuario usuario)
+        public Result update(UserDtoUpdate usuario)
         {
+            var entity = _mapper.Map<Usuario>(usuario);
             var user = _userManager.Users.FirstOrDefault(u => u.Id == usuario.Id);
+             
 
-            user.PhoneNumber = usuario.PhoneNumber;
-            user.Email = usuario.Email;
-            user.UserName = usuario.Username;
-            user.ProfileImageUrl = usuario.ProfileImageUrl;
+            user.PhoneNumber = !string.IsNullOrEmpty(entity.PhoneNumber) ? entity.PhoneNumber : user.PhoneNumber;
+            user.Email = !string.IsNullOrEmpty(entity.Email) ? entity.Email : user.Email;
+            user.UserName = user.UserName;
+            user.ProfileImageUrl = !string.IsNullOrEmpty(entity.ProfileImageUrl) ? entity.ProfileImageUrl : user.ProfileImageUrl;
 
             var result = _userManager.UpdateAsync(user);
 

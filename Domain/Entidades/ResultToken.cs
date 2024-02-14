@@ -13,5 +13,6 @@ namespace Domain.Entidades
         public int UsuarioId { get; set; }
 
         public bool Authenticated { get; set; }
+
     }
 }

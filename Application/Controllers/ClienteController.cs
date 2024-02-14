@@ -33,6 +33,16 @@ namespace Application.Controllers
                     return BadRequest(ModelState);
                 }
 
+                if(cnpj == "null")
+                {
+                    cnpj = null;
+                }
+
+                if (!string.IsNullOrEmpty(cnpj))
+                {
+                    cnpj = cnpj.Substring(0, 10) + '/'+ cnpj.Substring(11);
+                }
+
                 var result = _clienteService.filtrarClientes(razaoSocial, cnpj, email);
 
                 if (result == null)

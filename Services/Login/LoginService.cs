@@ -69,6 +69,8 @@ namespace Services.Login
                     tokenResult.Token = token.Value;
                     tokenResult.UsuarioId = identityUser.Id;
                     tokenResult.Authenticated = true;
+              
+
 
                     return tokenResult;
 

@@ -1,4 +1,5 @@
-﻿using Domain.Entidades;
+﻿using Domain.Dtos.User;
+using Domain.Entidades;
 using Domain.Services.Usuarios;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
@@ -48,7 +49,7 @@ namespace UserApplication.Controllers
         }
         [HttpPut]
         [Route("update")]
-        public IActionResult updateUsuario([FromBody] Usuario usuario)
+        public IActionResult updateUsuario([FromBody] UserDtoUpdate usuario)
         {
             try
             {
@@ -56,6 +57,8 @@ namespace UserApplication.Controllers
                 {
                     return BadRequest(ModelState);
                 }
+
+
 
                 Result result = _usuarioService.update(usuario);
 
