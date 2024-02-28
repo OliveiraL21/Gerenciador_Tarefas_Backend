@@ -265,5 +265,33 @@ namespace Application.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+
+        [HttpGet]
+        [Route("lista/projeto/{projeto}")]
+        public IActionResult ListaTarefasByProjeto(int projeto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var result = _tarefaService.ListaTarefaByProjeto(projeto);
+
+                if(result == null)
+                {
+                    return BadRequest(new ErrorHandle { Error = "Nenhuma tarefa encontrada" });
+                }
+
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }

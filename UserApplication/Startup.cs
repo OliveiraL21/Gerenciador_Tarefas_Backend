@@ -47,7 +47,15 @@ namespace UserApplication
             var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
             services.AddControllers();
-            services.AddTransient<UserDbContext>().AddDbContext<UserDbContext>(options => options.UseMySql(Configuration.GetConnectionString("UserConnection"), new MySqlServerVersion(new Version(8,0,38))));
+            services.AddTransient<UserDbContext>().AddDbContext<UserDbContext>(options => options.UseMySql(Configuration.GetConnectionString("UserConnection"), new MySqlServerVersion(new Version(8,0,38)),
+                mySqlOptionsAction: sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(30),
+                        errorNumbersToAdd: null);
+                }
+                ));
            
             services.AddIdentity<CustomIdentityUser, IdentityRole<int>>(opt =>
             {

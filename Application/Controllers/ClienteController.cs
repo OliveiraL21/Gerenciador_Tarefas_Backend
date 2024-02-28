@@ -59,6 +59,33 @@ namespace Application.Controllers
         }
 
         [HttpGet]
+        [Route("/lista-simples")]
+        [Authorize(Roles = "admin, regular")]
+        public IActionResult ListaSimples()
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+
+                var result = _clienteService.ListaSimples();
+
+                if(result == null)
+                {
+
+                }
+
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
         [Route("/lista")]
         [Authorize(Roles = "admin, regular")]
         public IActionResult listaClientes()

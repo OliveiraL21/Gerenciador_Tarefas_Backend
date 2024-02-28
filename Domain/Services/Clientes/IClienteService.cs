@@ -1,4 +1,5 @@
-﻿using Domain.Entidades;
+﻿using Domain.Dtos.cliente;
+using Domain.Entidades;
 using Domain.Repository;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace Domain.Services.Clientes
     {
         List<Cliente> filtrarClientes(string razaoSocial, string cnpj, string email);
         IEnumerable<Cliente> listarClientes();
+        IEnumerable<ClienteListSimple> ListaSimples();
     }
 }

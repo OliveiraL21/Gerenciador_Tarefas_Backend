@@ -44,7 +44,16 @@ namespace Application
         {
             var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
             services.AddControllers();
-            services.AddDbContext<MyContext>(options => options.UseMySql(Configuration.GetConnectionString("Controle_TarefasDB"), new MySqlServerVersion(new Version(8, 0, 38))));
+            services.AddDbContext<MyContext>(options => options.UseMySql(Configuration.GetConnectionString("Controle_TarefasDB"), new MySqlServerVersion(new Version(8, 0, 38)),
+                mySqlOptionsAction: sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(30),
+                        errorNumbersToAdd: null
+                        );
+                } 
+                ));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
            
 
