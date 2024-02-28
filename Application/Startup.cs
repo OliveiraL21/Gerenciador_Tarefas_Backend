@@ -2,6 +2,7 @@ using Data;
 using Data.Context;
 using Domain.Repository;
 using Domain.Services.Clientes;
+using Domain.Services.Dashboard;
 using Domain.Services.Projetos;
 using Domain.Services.Tarefas;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,6 +20,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Services.Clientes;
+using Services.DashBoard;
 using Services.Projetos;
 using Services.StatusService;
 using Services.Tarefas;
@@ -62,6 +64,7 @@ namespace Application
             services.AddTransient<IProjetoService, ProjetoService>();
             services.AddTransient<StatusService, StatusService>();
             services.AddTransient<ITarefaService, TarefaService>();
+            services.AddTransient<IDashboardService, DashboardService>();
             #endregion
 
             #region Repository

@@ -127,6 +127,19 @@ namespace Services.Tarefas
             return _tarefaRepository.update(entity);
         }
 
+        private double SomarHoras(DashboardResultEntity dashboardEntity)
+        {
+            if (dashboardEntity == null)
+            {
+                return 0;
+            }
+
+            var total = dashboardEntity.Segunda + dashboardEntity.Terca + dashboardEntity.Quarta + dashboardEntity.Quinta + dashboardEntity.Sexta + dashboardEntity.Sabado
+               + dashboardEntity.Domingo;
+
+            return total;
+        }
+
         public DashboardResultEntity ListaTarefaByProjeto(int projeto)
         {
             var today = DateTime.Now;
@@ -150,6 +163,7 @@ namespace Services.Tarefas
                     result.Sexta = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(4)).Sum(x => x.Duracao.Hour);
                     result.Sabado = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(5)).Sum(x => x.Duracao.Hour);
                     result.Domingo = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(6)).Sum(x => x.Duracao.Hour);
+                    result.TotalHoras = SomarHoras(result);
                     break;
 
                 case DayOfWeek.Tuesday:
@@ -157,6 +171,7 @@ namespace Services.Tarefas
                     var dataInicialTerca = new DateTime(tempIniTerca.Year, tempIniTerca.Month, tempIniTerca.Day, 0, 0, 0);
                     var tempDataTerca = today.AddDays(6);
                     var dataFimTerca = new DateTime(tempDataTerca.Year, tempDataTerca.Month, tempDataTerca.Day, 0, 0, 0);
+
                     tarefas = _context.Tarefas.Where(tarefa => tarefa.ProjetoId == projeto && tarefa.Data >= dataInicialTerca && tarefa.Data <= dataFimTerca).ToList();
                     result.Segunda = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(-1)).Sum(x => x.Duracao.Hour);
                     result.Terca = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0)).Sum(x => x.Duracao.Hour);
@@ -165,6 +180,7 @@ namespace Services.Tarefas
                     result.Sexta = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(3)).Sum(x => x.Duracao.Hour);
                     result.Sabado = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(4)).Sum(x => x.Duracao.Hour);
                     result.Domingo = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(5)).Sum(x => x.Duracao.Hour);
+                    result.TotalHoras = SomarHoras(result);
                     break;
 
                 case DayOfWeek.Wednesday:
@@ -181,6 +197,7 @@ namespace Services.Tarefas
                     result.Sexta = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(2)).Sum(x => x.Duracao.Hour);
                     result.Sabado = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(3)).Sum(x => x.Duracao.Hour);
                     result.Domingo = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(4)).Sum(x => x.Duracao.Hour);
+                    result.TotalHoras = SomarHoras(result);
                     break;
 
                 case DayOfWeek.Thursday:
@@ -199,6 +216,7 @@ namespace Services.Tarefas
                     result.Sexta = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(1)).Sum(x => x.Duracao.Hour);
                     result.Sabado = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(2)).Sum(x => x.Duracao.Hour);
                     result.Domingo = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(3)).Sum(x => x.Duracao.Hour);
+                    result.TotalHoras = SomarHoras(result);
                     break;
 
                 case DayOfWeek.Friday:
@@ -218,6 +236,7 @@ namespace Services.Tarefas
                     result.Sexta = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0)).Sum(x => x.Duracao.Hour);
                     result.Sabado = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(1)).Sum(x => x.Duracao.Hour);
                     result.Domingo = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(2)).Sum(x => x.Duracao.Hour);
+                    result.TotalHoras = SomarHoras(result);
                     break;
 
                 case DayOfWeek.Saturday:
@@ -237,6 +256,7 @@ namespace Services.Tarefas
                     result.Sexta = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(-1)).Sum(x => x.Duracao.Hour);
                     result.Sabado = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0)).Sum(x => x.Duracao.Hour);
                     result.Domingo = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(1)).Sum(x => x.Duracao.Hour);
+                    result.TotalHoras = SomarHoras(result);
                     break;
 
                 case DayOfWeek.Sunday:
@@ -256,6 +276,7 @@ namespace Services.Tarefas
                     result.Sexta = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(-2)).Sum(x => x.Duracao.Hour);
                     result.Sabado = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(-1)).Sum(x => x.Duracao.Hour);
                     result.Domingo = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0)).Sum(x => x.Duracao.Hour);
+                    result.TotalHoras = SomarHoras(result);
                     break;
             }
 
