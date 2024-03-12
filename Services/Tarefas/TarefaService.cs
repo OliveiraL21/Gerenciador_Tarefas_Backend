@@ -187,7 +187,7 @@ namespace Services.Tarefas
                     var tempIniQuarta = today.AddDays(-2);
                     var dataInicialQuarta = new DateTime(tempIniQuarta.Year, tempIniQuarta.Month, tempIniQuarta.Day, 0, 0, 0);
                     var tempDataQuarta = today.AddDays(4);
-                    var dataFimQuarta = new DateTime(tempDataQuarta.Year, tempIniQuarta.Month, tempIniQuarta.Day, 0, 0, 0);
+                    var dataFimQuarta = new DateTime(tempDataQuarta.Year, tempDataQuarta.Month, tempDataQuarta.Day, 0, 0, 0);
                     tarefas = _context.Tarefas.Where(tarefa => tarefa.ProjetoId == projeto && tarefa.Data >= dataInicialQuarta && tarefa.Data <= dataFimQuarta).ToList();
 
                     result.Segunda = tarefas.Where(r => r.Data == new DateTime(today.Year, today.Month, today.Day, 0, 0, 0).AddDays(-2)).Sum(x => x.Duracao.Hour);
