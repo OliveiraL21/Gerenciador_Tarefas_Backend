@@ -14,7 +14,7 @@ namespace Services.Login
 {
     public class TokenService : ITokenService
     {
-        public Token gerarToken(IdentityUser<int> identityUser, string role)
+        public Token gerarToken(CustomIdentityUser identityUser, string role)
         {
             Claim[] direitos = new Claim[]
             {

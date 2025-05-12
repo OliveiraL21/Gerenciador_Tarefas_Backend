@@ -1,4 +1,5 @@
-﻿using Domain.Entidades;
+﻿using Domain.Dtos.User;
+using Domain.Entidades;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,11 @@ namespace Domain.Services.Usuarios
     public interface IUsuarioService
     {
         Result ativaUsuario(AtivaRequest request);
+        Result solicitarResetSenha(SolicitaRedefinicaoRequest solicitaRedefinicaoRequest);
+        Result EfetuarResetSenha(ResetaSenhaRequest request);
         Result createUsuario(Usuario usuario);
-        Result update(Usuario usuario);
+        Result update(UserDtoUpdate usuario);
         Usuario detaillsUsuario(int id);
-
+        Result updateProfileImage(string imageUrl, int id);
     }
 }

@@ -3,6 +3,7 @@ using Domain.Services.Email;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using MimeKit.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +20,9 @@ namespace Services.Email
         private string Password = "nkdpgxsiqiyxdzwo";
 
 
-        public void EnviarEmail(List<Destinatario> destinatario, string assunto, int usuarioId, string codigoAtivacao)
+        public void EnviarEmail(List<Destinatario> destinatario, string assunto, int usuarioId, string username, string codigoAtivacao, string pageTitle, string email = "")
         {
-            Mensagem mensagem = new Mensagem(destinatario, assunto, usuarioId, codigoAtivacao);
+            Mensagem mensagem = new Mensagem(destinatario, assunto, usuarioId,username, codigoAtivacao, pageTitle, email);
 
             var mensagemEmail = criarCorpoEmail(mensagem);
 
@@ -60,12 +61,10 @@ namespace Services.Email
             mensagemEmail.To.AddRange(mensagem.Destinatario);
             mensagemEmail.Subject = mensagem.Assunto.ToString();
 
-            mensagemEmail.Body = new TextPart(MimeKit.Text.TextFormat.Text)
+            mensagemEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
-                Text = mensagem.Conteudo
+                Text = mensagem.PageTitle == "Recuperar senha" ? mensagem.ConteudoResetSenha : mensagem.Conteudo
             };
-
-            
 
             return mensagemEmail;
         }

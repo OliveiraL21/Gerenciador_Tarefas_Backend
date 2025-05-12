@@ -1,31 +1,39 @@
 ﻿using AutoMapper;
 using Data.Context;
+using Domain.Dtos.User;
 using Domain.Entidades;
 using Domain.Services.Email;
+using Domain.Services.ResetaSenha;
 using Domain.Services.Usuarios;
 using FluentResults;
 using Microsoft.AspNetCore.Identity;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
+
 namespace Services.Usuarios
 {
     public class UsuarioService : IUsuarioService
     {
-        private readonly UserManager<IdentityUser<int>> _userManager;
+        private readonly UserManager<CustomIdentityUser> _userManager;
        
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
+        private readonly IResetaSenha _resetSenhaService;
 
-        public UsuarioService(IMapper mapper, UserManager<IdentityUser<int>> userManager, IEmailService emailService) 
+
+        public UsuarioService(IMapper mapper, UserManager<CustomIdentityUser> userManager, IEmailService emailService, IResetaSenha resetSenhaService) 
         {
            _mapper = mapper;
            _userManager = userManager;
            _emailService = emailService;
+            _resetSenhaService = resetSenhaService;
         }
 
         public Result ativaUsuario(AtivaRequest request)
@@ -41,12 +49,42 @@ namespace Services.Usuarios
                 return Result.Ok();
             }
 
-            return Result.Fail("Erro ao tentar ativar a conta do usuário");
+            return Result.Fail($"Erro ao tentar ativar a conta do usuário -  {identityResult.Errors.First().Description}");
+        }
+
+        public Result solicitarResetSenha(SolicitaRedefinicaoRequest solicitaRedefinicaoRequest)
+        {
+           return _resetSenhaService.SolicitaResetSenha(solicitaRedefinicaoRequest);
+        }
+
+        public Result EfetuarResetSenha(ResetaSenhaRequest request)
+        {
+            return _resetSenhaService.EfetuarResetSenhaUsuario(request);
+        }
+
+        private bool ExisteUsuarioByEmail(string email)
+        {
+            return _userManager.Users.Any(u => u.Email == email);
+        }
+
+        private bool ExisteUsuarioByUsername(string username)
+        {
+            return _userManager.Users.Any(u => u.UserName == username);
         }
 
         public  Result createUsuario(Usuario usuario)
         {
-            IdentityUser<int> user = _mapper.Map<IdentityUser<int>>(usuario);
+            CustomIdentityUser user = _mapper.Map<CustomIdentityUser>(usuario);
+
+            if (ExisteUsuarioByEmail(user.Email))
+            {
+                return Result.Fail("O e-mail escolhido já esta em uso por outro usuário");
+            }
+
+            if (ExisteUsuarioByUsername(user.UserName)) 
+            {
+                return Result.Fail("O nome de usuário já esta em uso por outro usuário do sistema");
+            }
 
             Task<IdentityResult> result = _userManager.CreateAsync(user, usuario.Password);
             
@@ -65,7 +103,8 @@ namespace Services.Usuarios
                 var encodeCode = HttpUtility.UrlEncode(code);
 
                 //ENVIAR EMAIL
-                _emailService.EnviarEmail(destinatario, "Código de ativação", user.Id, encodeCode);
+
+                _emailService.EnviarEmail(destinatario, "Código de ativação", user.Id, user.NormalizedUserName, encodeCode, "Ativar Conta" );
                 return Result.Ok().WithSuccess(code);
             }
             return Result.Fail($"Erro ao tentar cadastrar o usuário");
@@ -80,11 +119,19 @@ namespace Services.Usuarios
             return result;
         }
 
-        public Result update(Usuario usuario)
+        public Result update(UserDtoUpdate usuario)
         {
-            IdentityUser<int> user = _mapper.Map<IdentityUser<int>>(usuario);
+            var entity = _mapper.Map<Usuario>(usuario);
+            var user = _userManager.Users.FirstOrDefault(u => u.Id == usuario.Id);
+             
+
+            user.PhoneNumber = !string.IsNullOrEmpty(entity.PhoneNumber) ? entity.PhoneNumber : user.PhoneNumber;
+            user.Email = !string.IsNullOrEmpty(entity.Email) ? entity.Email : user.Email;
+            user.UserName = user.UserName;
+            user.ProfileImageUrl = !string.IsNullOrEmpty(entity.ProfileImageUrl) ? entity.ProfileImageUrl : user.ProfileImageUrl;
 
             var result = _userManager.UpdateAsync(user);
+
 
             if (result.Result.Succeeded)
             {
@@ -92,6 +139,22 @@ namespace Services.Usuarios
             }
 
             return Result.Fail("Erro ao tentar atualizar o usuário");
+        }
+
+        public Result updateProfileImage(string imageUrl, int id)
+        {
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+            user.ProfileImageUrl = imageUrl;
+            var result = _userManager.UpdateAsync(user);
+
+            if (result.Result.Succeeded)
+            {
+                return Result.Ok();
+            }
+
+            return Result.Fail("Erro ao tentar salvar imagem de perfil");
+
+            
         }
     }
 

@@ -9,6 +9,6 @@ namespace Domain.Services.Email
 {
     public interface IEmailService
     {
-        void EnviarEmail(List<Destinatario> destinatario, string assunto, int usuarioId, string codigoAtivacao);
+        void EnviarEmail(List<Destinatario> destinatario, string assunto, int usuarioId, string username, string codigoAtivacao, string pageTitle, string email = "");
     }
 }

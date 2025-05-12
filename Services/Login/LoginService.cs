@@ -13,16 +13,46 @@ namespace Services.Login
     public class LoginService : ILoginService
     {
         // declarando gerenciador de login
-        private readonly SignInManager<IdentityUser<int>> _signManager;
+        private readonly SignInManager<CustomIdentityUser> _signManager;
         private ITokenService _tokenService;
 
-        public LoginService(SignInManager<IdentityUser<int>> signManager, ITokenService tokenService)
+        public LoginService(SignInManager<CustomIdentityUser> signManager, ITokenService tokenService)
         {
             _signManager = signManager;
             _tokenService = tokenService;
         }
 
-        public ResultToken Login(LoginRequest login)
+        public bool UsuarioExiste(string username)
+        {
+            bool exist = _signManager.UserManager.Users.Any(x => x.UserName == username);
+
+            return exist ? exist : false;
+        }
+
+        private CustomIdentityUser RecuperaUsuario(string username)
+        {
+            var user = _signManager.UserManager.Users.SingleOrDefault(x => x.UserName == username);
+
+            return user;
+        }
+
+        public bool VerificaSenha(string username, string senha)
+        {
+            if(username != "" && senha != "")
+            {
+                var user = RecuperaUsuario(username);
+
+                if(user != null)
+                {
+                    PasswordHasher<CustomIdentityUser> hasher = new PasswordHasher<CustomIdentityUser>();
+                    var isEqual = hasher.VerifyHashedPassword(user, user.PasswordHash, senha);
+                    return isEqual.ToString() == "Failed" ? false : true; 
+                }
+            }
+            return false;
+        }
+
+        public ResultToken  Login(LoginRequest login)
         {
             if(login != null)
             {
@@ -58,11 +88,6 @@ namespace Services.Login
             }
             return null;
         
-        }
-
-        public Result Logout(LoginRequest login)
-        {
-            throw new NotImplementedException();
         }
     }
 }

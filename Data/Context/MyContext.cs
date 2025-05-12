@@ -28,7 +28,8 @@ namespace Data.Context
 
        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;database=Controle_Tarefas;Trusted_Connection=true;");
+            //optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;database=Controle_Tarefas;Trusted_Connection=true;");
+            optionsBuilder.UseMySql("Server=localhost;Port=3306;DataBase=GerenciadorTarefasDev;Uid=root;Pwd=Lucas98971@;SSL Mode=None",new MySqlServerVersion(new Version(8, 0, 38)));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,6 +39,12 @@ namespace Data.Context
             modelBuilder.Entity<Cliente>(new ClienteMap().Configure);
             modelBuilder.Entity<Tarefa>(new TarefaMap().Configure); 
             modelBuilder.Entity<Status>(new StatusMap().Configure);
+            modelBuilder.Entity<Status>().HasData(new Status() { Id = 1, Descricao = "Ativo" });
+            modelBuilder.Entity<Status>().HasData(new Status() { Id = 2,  Descricao = "Inatívo" });
+            modelBuilder.Entity<Status>().HasData(new Status() { Id = 3,  Descricao = "Em pausa" });
+            modelBuilder.Entity<Status>().HasData(new Status() { Id = 4, Descricao = "Excluído" });
+            modelBuilder.Entity<Status>().HasData(new Status() { Id = 5, Descricao = "Finalizado" });
+            modelBuilder.Entity<Status>().HasData(new Status() { Id = 6, Descricao = "Bloqueado" });
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Domain.Entidades
     public class SolicitaRedefinicaoRequest
     {
         [Required]
-        [DataType(DataType.EmailAddress)]
+        [DataType(DataType.EmailAddress, ErrorMessage = "E-mail no formato inválido")]
         public string Email { get; set; }
     }
 }

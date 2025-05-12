@@ -11,6 +11,7 @@ namespace Domain.Services.Login
     public interface ILoginService
     {
         public ResultToken Login(LoginRequest login);
-        public Result Logout(LoginRequest login);
+        public bool VerificaSenha(string username, string password);
+        public bool UsuarioExiste(string username);
     }
 }

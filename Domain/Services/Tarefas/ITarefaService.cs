@@ -13,5 +13,6 @@ namespace Domain.Services.Tarefas
         List<Tarefa> filtrarTarefas(string descricao, string dataInicio, string dataFim, int? projetoId);
         string calcularHorasTotais(DateTime data);
         IEnumerable<Tarefa> listaTarefas();
+        DashboardResultEntity ListaTarefaByProjeto(int projeto);
     }
 }

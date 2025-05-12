@@ -33,6 +33,16 @@ namespace Application.Controllers
                     return BadRequest(ModelState);
                 }
 
+                if(cnpj == "null")
+                {
+                    cnpj = null;
+                }
+
+                if (!string.IsNullOrEmpty(cnpj))
+                {
+                    cnpj = cnpj.Substring(0, 10) + '/'+ cnpj.Substring(11);
+                }
+
                 var result = _clienteService.filtrarClientes(razaoSocial, cnpj, email);
 
                 if (result == null)
@@ -43,6 +53,33 @@ namespace Application.Controllers
                 return Ok(result);
             }
             catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("/lista-simples")]
+        [Authorize(Roles = "admin, regular")]
+        public IActionResult ListaSimples()
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+
+                var result = _clienteService.ListaSimples();
+
+                if(result == null)
+                {
+
+                }
+
+                return Ok(result);
+            }
+            catch(Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }

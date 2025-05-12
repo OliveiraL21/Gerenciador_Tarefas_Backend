@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.Dtos.User;
 using Domain.Entidades;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -13,8 +14,9 @@ namespace Services.Profiles
     {
         public UsuarioProfile()
         {
-            CreateMap<IdentityUser<int>, Usuario>();
-            CreateMap<Usuario, IdentityUser<int>>();
+            CreateMap<IdentityUser<int>, Usuario>().ReverseMap();
+            CreateMap<Usuario, CustomIdentityUser>().ReverseMap();
+            CreateMap<UserDtoUpdate, Usuario>().ReverseMap();
         }
     }
 }

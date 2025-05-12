@@ -1,4 +1,6 @@
-﻿using Data.Context;
+﻿using AutoMapper;
+using Data.Context;
+using Domain.Dtos.cliente;
 using Domain.Entidades;
 using Domain.Repository;
 using Domain.Services.Clientes;
@@ -15,10 +17,12 @@ namespace Services.Clientes
     {
         private readonly IRepository<Cliente> _clienteRepository;
         private readonly MyContext _context;
-        public ClienteService(IRepository<Cliente> clienteRepository, MyContext context)
+        private readonly IMapper _mapper;
+        public ClienteService(IRepository<Cliente> clienteRepository, MyContext context,  IMapper mapper)
         {
             _clienteRepository = clienteRepository;
             _context = context;
+            _mapper = mapper;
         }
         public bool delete(int id)
         {
@@ -73,6 +77,18 @@ namespace Services.Clientes
         public IEnumerable<Cliente> listarClientes()
         {
             return _context.Clientes.Include(x => x.Projetos).ToList().OrderBy(x => x.RazaoSocial);
+        }
+
+        public IEnumerable<ClienteListSimple> ListaSimples()
+        {
+            var result = new List<ClienteListSimple>();
+            var clientes = _context.Clientes.ToList();
+            clientes.ForEach(cliente =>
+            {
+                result.Add(_mapper.Map<ClienteListSimple>(cliente));
+            });
+
+            return result;
         }
 
         public Cliente select(int id)
