@@ -12,7 +12,6 @@ namespace Domain.Entidades
         public int UsuarioId { get; set; }
         public string Message { get; set; }
         public bool IsFail { get; set; }
-
         public bool Authenticated { get; set; }
 
     }

@@ -70,7 +70,7 @@ namespace Services.Login
                     tokenResult.UsuarioId = identityUser.Id;
                     tokenResult.Message = "Usuário logado com sucesso!";
                     tokenResult.IsFail = false;
-
+                    tokenResult.Authenticated = true;
                     return tokenResult;
 
                 }
@@ -80,7 +80,8 @@ namespace Services.Login
                     UsuarioId = 0,
                     Token = "",
                     Message = result.Result.IsNotAllowed ? "Usuário não autorizado, por favor ative o seu usuário pelo link enviado ao e-mail de cadastro" : "Usuário não encontrado",
-                    IsFail = true
+                    IsFail = true,
+                    Authenticated = false
                 };
 
                 return resultReturn;
