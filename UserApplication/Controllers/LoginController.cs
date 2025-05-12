@@ -36,7 +36,7 @@ namespace UserApplication.Controllers
              
 
 
-                if(result == null)
+                if(result.IsFail)
                 {
                     return Unauthorized(result);
                 }
