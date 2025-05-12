@@ -44,13 +44,13 @@ namespace UserApplication.Controllers
 
                     var result = _loginService.Login(login);
 
-                    if (result != null)
+                    if (result.IsFail == false)
                     {
                         return Ok(result);
                     }
                     else
                     {
-                        return Unauthorized(new ErrorHandle() { Error = "Você não tem autorização para acessar esse recurso, contate seu  administrador !" });
+                        return Unauthorized(new ErrorHandle() { Error = result.Message });
                     }
                 }
                 else
