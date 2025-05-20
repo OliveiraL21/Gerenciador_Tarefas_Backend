@@ -22,9 +22,9 @@ namespace Application.Controllers
      
 
         [HttpGet]
-        [Route("/filtrar/{razaoSocial}/{cnpj}/{email}")]
+        [Route("/filtrar")]
         [Authorize(Roles = "admin, regular")]
-        public IActionResult filtrar(string razaoSocial, string cnpj, string email)
+        public IActionResult filtrar([FromQuery] string razaoSocial, [FromQuery]string cnpj)
         {
             try
             {
@@ -33,17 +33,7 @@ namespace Application.Controllers
                     return BadRequest(ModelState);
                 }
 
-                if(cnpj == "null")
-                {
-                    cnpj = null;
-                }
-
-                if (!string.IsNullOrEmpty(cnpj))
-                {
-                    cnpj = cnpj.Substring(0, 10) + '/'+ cnpj.Substring(11);
-                }
-
-                var result = _clienteService.filtrarClientes(razaoSocial, cnpj, email);
+                var result = _clienteService.filtrarClientes(razaoSocial, cnpj);
 
                 if (result == null)
                 {

@@ -34,34 +34,28 @@ namespace Services.Clientes
             return false;
         }
 
-        public List<Cliente> filtrarClientes(string? razaoSocial, string? cnpj, string? email)
+        public List<Cliente> filtrarClientes(string? razaoSocial, string? cnpj)
         {
-            var razao = razaoSocial == "null" ? null : razaoSocial;
-            var cnpjCliente = cnpj == "null" ? null : cnpj;
-            var emailCliente = email == "null" ? null : email;
+            razaoSocial = razaoSocial == "null" ? null : razaoSocial;
+            cnpj = cnpj == "null" ? null : cnpj;
 
-            if (!string.IsNullOrEmpty(razao) && string.IsNullOrEmpty(cnpjCliente) && string.IsNullOrEmpty(emailCliente))
+            if (!string.IsNullOrEmpty(cnpj))
             {
-                var result = _context.Clientes.Where(x => EF.Functions.Like(x.RazaoSocial, $"%{razao}%")).Include(p => p.Projetos).ToList();
-                return result;
+                cnpj = cnpj.Substring(0, 10) + '/' + cnpj.Substring(11);
             }
+            var result = _context.Clientes.Include(c => c.Projetos).AsQueryable();
 
-            if (string.IsNullOrEmpty(razao) && !string.IsNullOrEmpty(cnpjCliente) && string.IsNullOrEmpty(emailCliente))
+            if (!string.IsNullOrEmpty(razaoSocial))
             {
-                var result = _context.Clientes.Where(x => EF.Functions.Like(x.Cnpj, $"%{cnpjCliente}%")).Include(p => p.Projetos).ToList();
-                return result;
+                result = result.Where(x => EF.Functions.Like(x.RazaoSocial, $"%{razaoSocial}%"));
             }
 
-            if (string.IsNullOrEmpty(razao) && string.IsNullOrEmpty(cnpjCliente) && !string.IsNullOrEmpty(emailCliente))
+            if (!string.IsNullOrEmpty(cnpj))
             {
-                var result = _context.Clientes.Where(x => EF.Functions.Like(x.Email, $"%{emailCliente}%")).Include(p => p.Projetos).ToList();
-                return result;
+                 result = result.Where(x => EF.Functions.Like(x.Cnpj, $"%{cnpj}%"));
             }
-            else
-            {
-                var result = _context.Clientes.Include(x => x.Projetos).ToList();
-                return result;
-            }
+
+            return result.ToList();
         }
 
         public Cliente insert(Cliente entity)

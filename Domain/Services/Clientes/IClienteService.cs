@@ -11,7 +11,7 @@ namespace Domain.Services.Clientes
 {
     public interface IClienteService : IRepository<Cliente>
     {
-        List<Cliente> filtrarClientes(string razaoSocial, string cnpj, string email);
+        List<Cliente> filtrarClientes(string razaoSocial, string cnpj);
         IEnumerable<Cliente> listarClientes();
         IEnumerable<ClienteListSimple> ListaSimples();
     }
