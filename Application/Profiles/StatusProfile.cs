@@ -8,9 +8,9 @@ namespace Application.Profiles
     {
         public StatusProfile()
         {
-            CreateMap<Status, StatusListagemDTO>();
-            CreateMap<StatusListagemDTO, Status>();
-            CreateMap<CreateStatusDto, Status>();
+            CreateMap<StatusEntity, StatusListagemDTO>();
+            CreateMap<StatusListagemDTO, StatusEntity>();
+            CreateMap<CreateStatusDto, StatusEntity>();
         }
     }
 }

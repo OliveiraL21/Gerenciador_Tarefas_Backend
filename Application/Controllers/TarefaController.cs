@@ -194,7 +194,7 @@ namespace Application.Controllers
                 }
 
               
-                var tarefa = _mapper.Map<Tarefa>(tarefaDto);
+                var tarefa = _mapper.Map<TarefaEntity>(tarefaDto);
                 var result = this._tarefaService.insert(tarefa);
 
                 if (result == null)
@@ -224,7 +224,7 @@ namespace Application.Controllers
                 tarefaDto.Id = id;
             
 
-                var tarefa = _mapper.Map<Tarefa>(tarefaDto);
+                var tarefa = _mapper.Map<TarefaEntity>(tarefaDto);
                 var result = _tarefaService.update(tarefa);
 
                 if (result == null)

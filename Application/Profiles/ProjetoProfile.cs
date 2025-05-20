@@ -8,11 +8,11 @@ namespace Application.Profiles
     {
         public ProjetoProfile()
         {
-            CreateMap<Projeto, ProjetoListagemDTO>();
-            CreateMap<ProjetoListagemDTO, Projeto>();
-            CreateMap<Projeto, ProjetoListagemSimplesDTO>();
-            CreateMap<Projeto, UpdateProjetoDTO>();
-            CreateMap<UpdateProjetoDTO, Projeto>();
+            CreateMap<ProjetoEntity, ProjetoListagemDTO>();
+            CreateMap<ProjetoListagemDTO, ProjetoEntity>();
+            CreateMap<ProjetoEntity, ProjetoListagemSimplesDTO>();
+            CreateMap<ProjetoEntity, UpdateProjetoDTO>();
+            CreateMap<UpdateProjetoDTO, ProjetoEntity>();
         }
     }
 }

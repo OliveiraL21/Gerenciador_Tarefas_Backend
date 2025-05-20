@@ -13,9 +13,9 @@ namespace Services.Projetos
 {
     public class ProjetoService : IProjetoService
     {
-        private readonly IRepository<Projeto> _repository;
+        private readonly IRepository<ProjetoEntity> _repository;
         private readonly MyContext _context;
-        public ProjetoService(IRepository<Projeto> repository, MyContext context)
+        public ProjetoService(IRepository<ProjetoEntity> repository, MyContext context)
         {
             _repository = repository;
             _context = context;
@@ -31,7 +31,7 @@ namespace Services.Projetos
             return result;
         }
 
-        public IEnumerable<Projeto> FiltrarProjetos(int? projeto, int? clienteId, int? statusId)
+        public IEnumerable<ProjetoEntity> FiltrarProjetos(int? projeto, int? clienteId, int? statusId)
         {
             var projetoId = projeto == null || projeto == 0 ? null : projeto;
             var cliente = clienteId == null || clienteId == 0 ? null : clienteId;
@@ -61,30 +61,30 @@ namespace Services.Projetos
             }
         }
 
-        public List<Projeto> GetAll()
+        public List<ProjetoEntity> GetAll()
         {
 
             var projetos = _context.Projetos.Include(x => x.Status).Include(c => c.Cliente).ToList();
             return projetos;
         }
 
-        public Projeto insert(Projeto entity)
+        public ProjetoEntity insert(ProjetoEntity entity)
         {
             return entity != null ? _repository.insert(entity) : null;
         }
 
-        public IEnumerable<Projeto> listaSimples()
+        public IEnumerable<ProjetoEntity> listaSimples()
         {
             var result = _context.Projetos.ToList();
             return result;
         }
 
-        public Projeto select(int id)
+        public ProjetoEntity select(int id)
         {
             return id != 0 ? _repository.select(id) : null;
         }
 
-        public Projeto update(Projeto entity)
+        public ProjetoEntity update(ProjetoEntity entity)
         {
             return  entity != null ? _repository.update(entity) : null;
         }

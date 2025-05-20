@@ -14,7 +14,7 @@ namespace Data.ModelMapping
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
             builder.HasKey(u => u.Id);
-            builder.Property(u => u.Id).ValueGeneratedOnAdd().UseIdentityColumn();
+            builder.Property(u => u.Id);
 
             builder.Property(u => u.Username).IsRequired();
             builder.HasIndex(u => u.Username);

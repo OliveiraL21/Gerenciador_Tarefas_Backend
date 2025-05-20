@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Data.ModelMapping
 {
-    public class TarefaMap : IEntityTypeConfiguration<Tarefa>
+    public class TarefaMap : IEntityTypeConfiguration<TarefaEntity>
     {
-        public void Configure(EntityTypeBuilder<Tarefa> builder)
+        public void Configure(EntityTypeBuilder<TarefaEntity> builder)
         {
             builder.HasKey(t => t.Id); 
-            builder.Property(t => t.Id).UseIdentityColumn().ValueGeneratedOnAdd();
+            builder.Property(t => t.Id);
 
             builder.Property(t => t.Descricao).IsRequired();
             builder.Property(t => t.HorarioInicio).IsRequired();

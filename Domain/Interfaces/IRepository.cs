@@ -9,13 +9,14 @@ namespace Domain.Repository
 {
     public interface IRepository <T> where T : BaseEntity
     {
-        T insert(T entity);
+        Task<T> InsertAsync(T entity);
 
-        T update(T entity);
+        Task<T> UpdateAsync(Guid id, T entity);
 
-        T select(int id);
+        Task<T> SelectAsync(Guid id);
 
-        bool delete(int id);
+        Task<bool> DeleteAsync(Guid id);
+        Task<bool> ExistAsync(Guid id);
 
        
     }

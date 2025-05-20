@@ -10,7 +10,7 @@ namespace Domain.Entidades
     public class AtivaRequest
     {
         [Required]
-        public int UsuarioId { get; set; }
+        public Guid UsuarioId { get; set; }
 
         [Required]
         public string CodigoAtivacao { get; set; }

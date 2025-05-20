@@ -13,38 +13,32 @@ namespace Data.Context
     {
         public DbSet<Usuario> Usuarios { get; set; }
 
-        public DbSet<Projeto> Projetos { get; set; }
+        public DbSet<ProjetoEntity> Projetos { get; set; }
 
         public DbSet<Cliente> Clientes { get; set; }
 
-        public DbSet<Tarefa> Tarefas { get; set; }
+        public DbSet<TarefaEntity> Tarefas { get; set; }
 
-        public DbSet<Status> Status { get; set; }
+        public DbSet<StatusEntity> Status { get; set; }
 
         public MyContext(DbContextOptions<MyContext>options) : base(options) 
         {
 
         }
 
-       protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;database=Controle_Tarefas;Trusted_Connection=true;");
-            optionsBuilder.UseMySql("Server=localhost;Port=3306;DataBase=GerenciadorTarefasDev;Uid=root;Pwd=Lucas98971@;SSL Mode=None",new MySqlServerVersion(new Version(8, 0, 38)));
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Usuario>(new UsuarioMap().Configure);
-            modelBuilder.Entity<Projeto>(new ProjetoMap().Configure);
+            modelBuilder.Entity<ProjetoEntity>(new ProjetoMap().Configure);
             modelBuilder.Entity<Cliente>(new ClienteMap().Configure);
-            modelBuilder.Entity<Tarefa>(new TarefaMap().Configure); 
-            modelBuilder.Entity<Status>(new StatusMap().Configure);
-            modelBuilder.Entity<Status>().HasData(new Status() { Id = 1, Descricao = "Ativo" });
-            modelBuilder.Entity<Status>().HasData(new Status() { Id = 2,  Descricao = "Inatívo" });
-            modelBuilder.Entity<Status>().HasData(new Status() { Id = 3,  Descricao = "Em pausa" });
-            modelBuilder.Entity<Status>().HasData(new Status() { Id = 4, Descricao = "Excluído" });
-            modelBuilder.Entity<Status>().HasData(new Status() { Id = 5, Descricao = "Finalizado" });
-            modelBuilder.Entity<Status>().HasData(new Status() { Id = 6, Descricao = "Bloqueado" });
+            modelBuilder.Entity<TarefaEntity>(new TarefaMap().Configure); 
+            modelBuilder.Entity<StatusEntity>(new StatusMap().Configure);
+            modelBuilder.Entity<StatusEntity>().HasData(new StatusEntity() { Id = Guid.NewGuid(), Descricao = "Ativo" });
+            modelBuilder.Entity<StatusEntity>().HasData(new StatusEntity() { Id = Guid.NewGuid(),  Descricao = "Inatívo" });
+            modelBuilder.Entity<StatusEntity>().HasData(new StatusEntity() { Id = Guid.NewGuid(),  Descricao = "Em pausa" });
+            modelBuilder.Entity<StatusEntity>().HasData(new StatusEntity() { Id = Guid.NewGuid(), Descricao = "Excluído" });
+            modelBuilder.Entity<StatusEntity>().HasData(new StatusEntity() { Id = Guid.NewGuid(), Descricao = "Finalizado" });
+            modelBuilder.Entity<StatusEntity>().HasData(new StatusEntity() { Id = Guid.NewGuid(), Descricao = "Bloqueado" });
         }
     }
 }

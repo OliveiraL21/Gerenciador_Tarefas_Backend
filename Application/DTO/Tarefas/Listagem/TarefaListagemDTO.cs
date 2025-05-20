@@ -18,7 +18,7 @@ namespace Application.DTO.Tarefas.Listagem
 
         public StatusListagemDTO Status { get; set; }
 
-        public Projeto? Projeto { get; set; }
+        public ProjetoEntity? Projeto { get; set; }
 
         public string Descricao { get; set; }
 

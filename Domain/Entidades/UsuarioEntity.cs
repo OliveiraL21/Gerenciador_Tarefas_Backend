@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Entidades
 {
-    public class Usuario
+    public class UsuarioEntity
     {
         
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Username { get; set; }
 

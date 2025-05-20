@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Services.Clientes
 {
-    public interface IClienteService : IRepository<Cliente>
+    public interface IClienteService
     {
-        List<Cliente> filtrarClientes(string razaoSocial, string cnpj);
-        IEnumerable<Cliente> listarClientes();
+        List<ClienteEntity> filtrarClientes(string razaoSocial, string cnpj);
+        IEnumerable<ClienteEntity> listarClientes();
         IEnumerable<ClienteListSimple> ListaSimples();
     }
 }

@@ -13,7 +13,7 @@ namespace Application.DTO.Projetos
 
         public string DataFim { get; set; }
 
-        public Status Status { get; set; }
+        public StatusEntity Status { get; set; }
 
         public Cliente Cliente { get; set; }
     }

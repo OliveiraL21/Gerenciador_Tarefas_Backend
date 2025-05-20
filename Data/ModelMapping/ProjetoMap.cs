@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Data.ModelMapping
 {
-    public class ProjetoMap : IEntityTypeConfiguration<Projeto>
+    public class ProjetoMap : IEntityTypeConfiguration<ProjetoEntity>
     {
-        public void Configure(EntityTypeBuilder<Projeto> builder)
+        public void Configure(EntityTypeBuilder<ProjetoEntity> builder)
         {
             builder.ToTable("Projetos");
 
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).UseIdentityColumn().ValueGeneratedOnAdd();
+            builder.Property(x => x.Id);
 
             builder.Property(x => x.Descricao).IsRequired().HasMaxLength(200);
             builder.Property(x => x.DataInicio).IsRequired();

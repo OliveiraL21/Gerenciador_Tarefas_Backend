@@ -2,7 +2,7 @@
 
 namespace Domain.Entidades
 {
-    public class Tarefa : BaseEntity
+    public class TarefaEntity : BaseEntity
     {
 
         public DateTime HorarioInicio { get; set; }
@@ -17,12 +17,12 @@ namespace Domain.Entidades
 
         public string Descricao { get; set; }
 
-        public int ProjetoId { get; set; }
+        public Guid ProjetoId { get; set; }
 
-        public Projeto Projeto { get; set; }
+        public ProjetoEntity Projeto { get; set; }
 
-        public int StatusId { get; set; }
+        public Guid StatusId { get; set; }
 
-        public Status Status { get; set; }
+        public StatusEntity Status { get; set; }
     }
 }

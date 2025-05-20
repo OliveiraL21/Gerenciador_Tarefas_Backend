@@ -22,7 +22,7 @@ namespace Application.DTO.Tarefas.Update
         [Required(ErrorMessage = "Campo Obrigatório")]
         public string Duracao { get; set; }
 
-        public Status Status { get; set; }
+        public StatusEntity Status { get; set; }
 
         public int? ProjetoId { get; set; }
 

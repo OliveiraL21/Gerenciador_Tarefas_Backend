@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace Services.StatusService
 {
-    public class StatusService : IRepository<Status>
+    public class StatusService : IRepository<StatusEntity>
     {
-        private readonly IRepository<Status> _repository;
+        private readonly IRepository<StatusEntity> _repository;
         private readonly MyContext _context;
 
-        public StatusService(IRepository<Status> repository, MyContext context)
+        public StatusService(IRepository<StatusEntity> repository, MyContext context)
         {
            _repository= repository;
             _context= context;
         }
 
-        public Status insert(Status status)
+        public StatusEntity insert(StatusEntity status)
         {
             var result = _repository.insert(status);
             return result;
@@ -33,17 +33,17 @@ namespace Services.StatusService
             return result;
         }
 
-        public Status select(int id)
+        public StatusEntity select(int id)
         {
            return _repository.select(id);
         }
 
-        public IEnumerable<Status> listaStatus()
+        public IEnumerable<StatusEntity> listaStatus()
         {
             return _context.Status.ToList();
         }
 
-        public Status update(Status status)
+        public StatusEntity update(StatusEntity status)
         {
            return _repository.update(status);
         }

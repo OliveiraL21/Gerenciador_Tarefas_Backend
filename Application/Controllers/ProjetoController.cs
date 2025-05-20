@@ -136,7 +136,7 @@ namespace Application.Controllers
             [HttpPost]
             [Route("/projeto/create")]
             [Authorize(Roles = "admin, regular")]
-            public IActionResult create([FromBody] Projeto projeto)
+            public IActionResult create([FromBody] ProjetoEntity projeto)
             {
                 try
                 {
@@ -177,7 +177,7 @@ namespace Application.Controllers
                     }
 
                     projetoDto.Id = id;
-                    var projeto = _mapper.Map<Projeto>(projetoDto);
+                    var projeto = _mapper.Map<ProjetoEntity>(projetoDto);
                     var result = _projetoService.update(projeto);
 
                     if (result == null)

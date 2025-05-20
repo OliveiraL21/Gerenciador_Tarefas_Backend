@@ -9,7 +9,7 @@ namespace Application.DTO.Projetos
 
         public string Descricao { get; set; }
 
-        public Status status { get; set; }
+        public StatusEntity status { get; set; }
 
         public string Data_Inicio { get; set; }
 

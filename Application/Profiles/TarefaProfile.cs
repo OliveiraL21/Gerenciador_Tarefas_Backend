@@ -11,11 +11,11 @@ namespace Application.Profiles
     {
         public TarefaProfile()
         {
-            CreateMap<CreateTarefaDTO, Tarefa>();
-            CreateMap<ProjetoCreateDto, Projeto>();
-            CreateMap<UpdateTarefaDTO, Tarefa>();
-            CreateMap<TarefaListagemDTO, Tarefa>();
-            CreateMap<Tarefa, TarefaListagemDTO>();
+            CreateMap<CreateTarefaDTO, TarefaEntity>();
+            CreateMap<ProjetoCreateDto, ProjetoEntity>();
+            CreateMap<UpdateTarefaDTO, TarefaEntity>();
+            CreateMap<TarefaListagemDTO, TarefaEntity>();
+            CreateMap<TarefaEntity, TarefaListagemDTO>();
         }
     }
 }

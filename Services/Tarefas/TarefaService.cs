@@ -15,10 +15,10 @@ namespace Services.Tarefas
     public class TarefaService : ITarefaService
     {
         private readonly MyContext _context;
-        private readonly IRepository<Tarefa> _tarefaRepository;
-        private readonly IRepository<Status> _statusRepository;
-        private List<Tarefa> tarefas = new List<Tarefa>();
-        public TarefaService(MyContext context, IRepository<Tarefa> tarefaRepository, IRepository<Status> statusRepository)
+        private readonly IRepository<TarefaEntity> _tarefaRepository;
+        private readonly IRepository<StatusEntity> _statusRepository;
+        private List<TarefaEntity> tarefas = new List<TarefaEntity>();
+        public TarefaService(MyContext context, IRepository<TarefaEntity> tarefaRepository, IRepository<StatusEntity> statusRepository)
         {
             _context= context;
             _tarefaRepository = tarefaRepository;
@@ -58,7 +58,7 @@ namespace Services.Tarefas
         }
 
         
-        public List<Tarefa> filtrarTarefas(string? descricao, string? dataInicio, string? dataFim, int? projetoId)
+        public List<TarefaEntity> filtrarTarefas(string? descricao, string? dataInicio, string? dataFim, int? projetoId)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace Services.Tarefas
             }
         }
 
-        public Tarefa insert(Tarefa entity)
+        public TarefaEntity insert(TarefaEntity entity)
         {
             if (entity != null)
             {
@@ -107,13 +107,13 @@ namespace Services.Tarefas
             return null;
         }
 
-        public IEnumerable<Tarefa> listaTarefas()
+        public IEnumerable<TarefaEntity> listaTarefas()
         {
             var result = _context.Tarefas.Include(x => x.Projeto).Include(s => s.Status).ToList();
             return result;
         }
 
-        public Tarefa select(int id)
+        public TarefaEntity select(int id)
         {
             var tarefa = _tarefaRepository.select(id);
             var status = _statusRepository.select(tarefa.StatusId);
@@ -122,7 +122,7 @@ namespace Services.Tarefas
             return result;
         }
 
-        public Tarefa update(Tarefa entity)
+        public TarefaEntity update(TarefaEntity entity)
         {
             return _tarefaRepository.update(entity);
         }

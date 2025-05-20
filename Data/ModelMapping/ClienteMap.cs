@@ -16,13 +16,13 @@ namespace Data.ModelMapping
             builder.ToTable("Clientes");
 
             builder.HasKey(c => c.Id);
-            builder.Property(c => c.Id).UseIdentityColumn().ValueGeneratedOnAdd();
+            builder.Property(c => c.Id);
 
             builder.Property(c => c.RazaoSocial).IsRequired();
-            builder.Property(c => c.Cnpj).IsRequired();
-            builder.Property(c => c.Telefone).IsRequired();
-            builder.Property(c => c.Celular).IsRequired();
-            builder.Property(c => c.Email).IsRequired();
+            builder.Property(c => c.Cnpj);
+            builder.Property(c => c.Telefone);
+            builder.Property(c => c.Celular);
+            builder.Property(c => c.Email);
 
             builder.HasMany(c => c.Projetos).WithOne(c => c.Cliente);   
         }

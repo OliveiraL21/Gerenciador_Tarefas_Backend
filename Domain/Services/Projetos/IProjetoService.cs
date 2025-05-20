@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Services.Projetos
 {
-    public interface IProjetoService : IRepository<Projeto>
+    public interface IProjetoService : IRepository<ProjetoEntity>
     {
         double CalcularValorTotal(TimeSpan total_horas);
-        IEnumerable<Projeto> listaSimples();
-        IEnumerable<Projeto> FiltrarProjetos(int? projeto, int? clienteId, int? statusId);
-        List<Projeto> GetAll();
+        IEnumerable<ProjetoEntity> listaSimples();
+        IEnumerable<ProjetoEntity> FiltrarProjetos(int? projeto, int? clienteId, int? statusId);
+        List<ProjetoEntity> GetAll();
     }
 }

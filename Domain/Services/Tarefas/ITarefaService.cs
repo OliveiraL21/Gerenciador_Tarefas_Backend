@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Services.Tarefas
 {
-    public interface ITarefaService : IRepository<Tarefa>
+    public interface ITarefaService : IRepository<TarefaEntity>
     {
-        List<Tarefa> filtrarTarefas(string descricao, string dataInicio, string dataFim, int? projetoId);
+        List<TarefaEntity> filtrarTarefas(string descricao, string dataInicio, string dataFim, int? projetoId);
         string calcularHorasTotais(DateTime data);
-        IEnumerable<Tarefa> listaTarefas();
+        IEnumerable<TarefaEntity> listaTarefas();
         DashboardResultEntity ListaTarefaByProjeto(int projeto);
     }
 }

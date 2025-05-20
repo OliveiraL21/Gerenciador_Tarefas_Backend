@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Data.ModelMapping
 {
-    public class StatusMap : IEntityTypeConfiguration<Status>
+    public class StatusMap : IEntityTypeConfiguration<StatusEntity>
     {
-        public void Configure(EntityTypeBuilder<Status> builder)
+        public void Configure(EntityTypeBuilder<StatusEntity> builder)
         {
             builder.ToTable("status");
             builder.HasKey(s => s.Id);
-            builder.Property(s => s.Id).UseIdentityColumn().ValueGeneratedOnAdd();
+            builder.Property(s => s.Id);
 
             builder.Property(s => s.Descricao).IsRequired();
 

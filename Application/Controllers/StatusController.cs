@@ -62,7 +62,7 @@ namespace Application.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var status = _mapper.Map<Status>(statusDTO);
+                var status = _mapper.Map<StatusEntity>(statusDTO);
                 var result = _statusService.insert(status);
                 if(result == null)
                 {
@@ -80,7 +80,7 @@ namespace Application.Controllers
         [HttpPut]
         [Route("updateStatus")]
         [Authorize(Roles = "admin, regular")]
-        public IActionResult update([FromBody] Status status)
+        public IActionResult update([FromBody] StatusEntity status)
         {
             try
             {

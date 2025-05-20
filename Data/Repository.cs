@@ -4,6 +4,7 @@ using Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,55 +22,105 @@ namespace Data
             _dbSet = _context.Set<T>();
         }
 
-
-        public bool delete(int id)
+        public Task<bool> ExistAsync(Guid id)
         {
-            if(id > 0)
+            return _dbSet.AnyAsync(i => i.Id == id);
+        }
+
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            try
             {
-                var entity = _dbSet.SingleOrDefault(x =>x.Id == id);
-                if(entity != null)
+                var result = await _dbSet.SingleOrDefaultAsync(x => x.Id == id);
+                if (result == null)
                 {
-                    _dbSet.Remove(entity);
-                    _context.SaveChanges();
-                    return true;
+                    return false;
                 }
+                _dbSet.Remove(result);
+                await _context.SaveChangesAsync();
+                return true;
             }
-            return false;
+            catch (Exception ex) 
+            {
+                throw ex;
+            }
         }
 
-        public T insert(T entity)
+        public async Task<T> InsertAsync(T entity)
         {
-            if(entity != null)
+            try
             {
-                _context.Add(entity);
-                _context.SaveChanges();
-                return entity;
-            }
-            return null;
-        }
-
-        public T select(int id)
-        {
-            if(id > 0 ) 
-            {
-                return _dbSet.SingleOrDefault(x => x.Id == id);
-            }
-            return null;
-        }
-
-        public T update(T entity)
-        {
-            if(entity != null )
-            {
-                var origin = _dbSet.SingleOrDefault( x => x.Id == entity.Id);
-                if(origin != null)
+                if (entity.Id == Guid.Empty)
                 {
-                    _context.Entry(origin).CurrentValues.SetValues(entity);
-                    _context.SaveChanges();
-                    return  entity;
+                    entity.Id = Guid.NewGuid();
                 }
+
+                entity.CreateAt = DateTime.UtcNow;
+                _dbSet.Add(entity);
+                await _context.SaveChangesAsync();
             }
-            return null;
+            catch (Exception ex) 
+            {
+                throw ex;
+            }
+                       
+            return entity;
+            
+        }
+
+        public Task<T> SelectAsync(Guid id)
+        {
+            try
+            {
+                var result = _dbSet.SingleOrDefaultAsync(x => x.Id.Equals(id));
+                if (result == null)
+                    return null;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<IList<T>> SelectAllAsync()
+        {
+            try
+            {
+                return await _dbSet.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        public async Task<T> UpdateAsync(Guid id, T entity)
+        {
+            try
+            {
+                var entityOriginal = await _dbSet.SingleOrDefaultAsync(i => i.Id == id);
+
+                if (entityOriginal == null)
+                {
+                    return null;
+                }
+
+                entity.UpdateAt = DateTime.UtcNow;
+                entity.CreateAt = entityOriginal.CreateAt;
+
+                // Entry = entrada, que é onde vai o original, SetValues põe o valor do novo item.
+                _context.Entry(entityOriginal).CurrentValues.SetValues(entity);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+
+            return entity;
         }
     }
 }
