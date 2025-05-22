@@ -9,14 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data
+namespace Data.Repository
 {
-    public class Repository<T> : IRepository<T> where T : BaseEntity
+    public class BaseRepository<T> : IRepository<T> where T : BaseEntity
     {
         private readonly MyContext _context;
         private readonly DbSet<T> _dbSet;
 
-        public Repository(MyContext context)
+        public BaseRepository(MyContext context)
         {
             _context = context;
             _dbSet = _context.Set<T>();

@@ -13,7 +13,7 @@ namespace Services.Profiles
     {
         public ClienteProfile()
         {
-            CreateMap<Cliente, ClienteListSimple>().ReverseMap();
+            CreateMap<Cliente, ClienteDtoSimple>().ReverseMap();
         }
     }
 }

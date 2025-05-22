@@ -7,6 +7,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace Application.Controllers
 {
@@ -24,7 +25,7 @@ namespace Application.Controllers
         [HttpGet]
         [Route("/filtrar")]
         [Authorize(Roles = "admin, regular")]
-        public IActionResult filtrar([FromQuery] string razaoSocial, [FromQuery]string cnpj)
+        public async Task<IActionResult> Filtrar([FromQuery] string razaoSocial, [FromQuery]string cnpj)
         {
             try
             {
@@ -33,7 +34,7 @@ namespace Application.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var result = _clienteService.filtrarClientes(razaoSocial, cnpj);
+                var result = await _clienteService.FiltrarAsync(razaoSocial, cnpj);
 
                 if (result == null)
                 {
@@ -51,7 +52,7 @@ namespace Application.Controllers
         [HttpGet]
         [Route("/lista-simples")]
         [Authorize(Roles = "admin, regular")]
-        public IActionResult ListaSimples()
+        public async Task<IActionResult> ListaSimples()
         {
             try
             {
@@ -60,7 +61,7 @@ namespace Application.Controllers
                     return BadRequest();
                 }
 
-                var result = _clienteService.ListaSimples();
+                var result = await _clienteService.ListaSimplesAsync();
 
                 if(result == null)
                 {
@@ -78,11 +79,11 @@ namespace Application.Controllers
         [HttpGet]
         [Route("/lista")]
         [Authorize(Roles = "admin, regular")]
-        public IActionResult listaClientes()
+        public async Task<IActionResult> ListaClientes()
         {
             try
             {
-                var result = _clienteService.listarClientes();
+                var result = await _clienteService.ListarAsync();
 
                 if (result != null)
                 {
@@ -102,7 +103,7 @@ namespace Application.Controllers
         [HttpPost]
         [Route("/create")]
         [Authorize(Roles = "admin, regular")]
-        public IActionResult create([FromBody] Cliente cliente)
+        public async Task<IActionResult> Create([FromBody] ClienteEntity cliente)
         {
             try
             {
@@ -111,7 +112,7 @@ namespace Application.Controllers
                     return BadRequest();
                 }
 
-                var result = _clienteService.insert(cliente);
+                var result = await _clienteService.InsertAsync(cliente);
 
                 if (result == null)
                 {
@@ -128,7 +129,7 @@ namespace Application.Controllers
         [HttpPut]
         [Route("/update/{id}")]
         [Authorize(Roles = "admin, regular")]
-        public IActionResult update(int id, [FromBody] Cliente cliente)
+        public async Task<IActionResult> Update(Guid id, [FromBody] ClienteEntity cliente)
         {
             try
             {
@@ -139,7 +140,7 @@ namespace Application.Controllers
 
                 cliente.Id = id;
 
-                var result = _clienteService.update(cliente);
+                var result = await _clienteService.UpdateAsync(id, cliente);
 
                 if (result == null)
                 {
@@ -157,9 +158,9 @@ namespace Application.Controllers
         [HttpGet]
         [Route("/details/{id}")]
         [Authorize(Roles = "admin, regular")]
-        public IActionResult details(int id)
+        public async Task<IActionResult> Details(Guid id)
         {
-            var result = _clienteService.select(id);
+            var result = await _clienteService.GetAsync(id);
 
             if (result == null)
             {
@@ -171,11 +172,11 @@ namespace Application.Controllers
         [HttpDelete]
         [Route("/delete/{id}")]
         [Authorize(Roles = "admin, regular")]
-        public IActionResult delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
-                var result = _clienteService.delete(id);
+                var result =  await _clienteService.DeleteAsync(id);
 
                 if (result == false)
                 {

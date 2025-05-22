@@ -11,8 +11,12 @@ namespace Domain.Services.Clientes
 {
     public interface IClienteService
     {
-        List<ClienteEntity> filtrarClientes(string razaoSocial, string cnpj);
-        IEnumerable<ClienteEntity> listarClientes();
-        IEnumerable<ClienteListSimple> ListaSimples();
+        Task<ClienteDtoCreateResult> InsertAsync(ClienteDtoCreate cliente);
+        Task<bool> DeleteAsync(Guid id);
+        Task<ClienteDtoUpdateResult> UpdateAsync(Guid id, ClienteDtoUpdate cliente);
+        Task<ClienteDto> GetAsync(Guid id);
+        Task<IEnumerable<ClienteDto>> FiltrarAsync(string razaoSocial, string cnpj);
+        Task<IEnumerable<ClienteDto>> ListarAsync();
+        Task<IEnumerable<ClienteDtoSimple>> ListaSimplesAsync();
     }
 }

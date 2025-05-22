@@ -3,7 +3,7 @@ using System;
 
 namespace Application.DTO.Projetos
 {
-    public class UpdateProjetoDTO
+    public class ProjetoDtoUpdate
     {
         public int Id { get; set; }
 

@@ -15,6 +15,6 @@ namespace Domain.Entidades
 
         public string? Email { get; set; }
 
-        public List<ProjetoEntity>? Projetos { get; set; }
+        public IEnumerable<ProjetoEntity>? Projetos { get; set; }
     }
 }

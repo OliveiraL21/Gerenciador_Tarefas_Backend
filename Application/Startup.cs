@@ -1,5 +1,6 @@
-using Data;
+using CrossCutting.DependencyInjection;
 using Data.Context;
+using Data.Repository;
 using Domain.Repository;
 using Domain.Services.Clientes;
 using Domain.Services.Dashboard;
@@ -57,20 +58,9 @@ namespace Application
                 } 
                 ));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-           
-
-            #region Services
-            services.AddTransient<IClienteService, ClienteService>();
-            services.AddTransient<IProjetoService, ProjetoService>();
-            services.AddTransient<StatusService, StatusService>();
-            services.AddTransient<ITarefaService, TarefaService>();
-            services.AddTransient<IDashboardService, DashboardService>();
-            #endregion
-
-            #region Repository
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
-            #endregion
+            
+            ConfigureService.ConfigureDependenciesService(services);
+            ConfigureRepository.ConfigureDependenciesRepository(services);
 
             services.AddCors(options =>
             {

@@ -31,10 +31,10 @@ namespace Application.Controllers
                 try
                 {
                     var projetos = _projetoService.GetAll();
-                    var result = new List<ProjetoListagemDTO>();
+                    var result = new List<ProjetoDtoListagem>();
                     foreach (var projeto in projetos)
                     {
-                        var projetoResult = new ProjetoListagemDTO() {
+                        var projetoResult = new ProjetoDtoListagem() {
                             Id = projeto.Id,
                             Descricao = projeto.Descricao,
                             Data_Inicio = projeto.DataInicio.ToString("dd/MM/yyyy"),
@@ -70,10 +70,10 @@ namespace Application.Controllers
                     }
 
                     var projetos = _projetoService.listaSimples();
-                    var result = new List<ProjetoListagemSimplesDTO>();
+                    var result = new List<ProjetoDtoSimple>();
                     foreach (var projeto in projetos)
                     {
-                        var projetoSimplesDTO = _mapper.Map<ProjetoListagemSimplesDTO>(projeto);
+                        var projetoSimplesDTO = _mapper.Map<ProjetoDtoSimple>(projeto);
                         result.Add(projetoSimplesDTO);
                     }
 
@@ -102,12 +102,12 @@ namespace Application.Controllers
                     }
 
                     var projetos = _projetoService.FiltrarProjetos(projeto, cliente, status);
-                    var result = new List<ProjetoListagemDTO>();
+                    var result = new List<ProjetoDtoListagem>();
 
                     foreach (var item in projetos)
                     {
 
-                    var projetoDTO = new ProjetoListagemDTO()
+                    var projetoDTO = new ProjetoDtoListagem()
                     {
                         Id = item.Id,
                         Descricao = item.Descricao,
@@ -166,7 +166,7 @@ namespace Application.Controllers
             [HttpPut]
             [Route("/projeto/update/{id}")]
             [Authorize(Roles = "admin, regular")]
-            public IActionResult update(int id, [FromBody] UpdateProjetoDTO projetoDto)
+            public IActionResult update(int id, [FromBody] ProjetoDtoUpdate projetoDto)
             {
                 try
                 {

@@ -1,8 +1,9 @@
-﻿namespace Application.DTO.Projetos
+﻿namespace Application.DTO.StatusDTO
 {
-    public class ProjetoListagemSimplesDTO
+    public class StatusDtoListagem
     {
         public int Id { get; set; }
+
         public string Descricao { get; set; }
     }
 }

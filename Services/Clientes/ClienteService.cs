@@ -2,6 +2,8 @@
 using Data.Context;
 using Domain.Dtos.cliente;
 using Domain.Entidades;
+using Domain.Models;
+using Domain.Repositories;
 using Domain.Repository;
 using Domain.Services.Clientes;
 using Microsoft.EntityFrameworkCore;
@@ -15,91 +17,70 @@ namespace Services.Clientes
 {
     public class ClienteService : IClienteService
     {
-        private readonly IRepository<Cliente> _clienteRepository;
-        private readonly MyContext _context;
+        private readonly IClienteRepository _repository;
         private readonly IMapper _mapper;
-        public ClienteService(IRepository<Cliente> clienteRepository, MyContext context,  IMapper mapper)
+        public ClienteService(IClienteRepository clienteRepository, MyContext context,  IMapper mapper)
         {
-            _clienteRepository = clienteRepository;
-            _context = context;
+            _repository = clienteRepository;
             _mapper = mapper;
         }
-        public bool delete(int id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             if (id != null)
             {
-                var result = _clienteRepository.delete(id);
+                var result = await _repository.DeleteAsync(id);
                 return result;
             }
             return false;
         }
 
-        public List<Cliente> filtrarClientes(string? razaoSocial, string? cnpj)
+        public async Task<IEnumerable<ClienteDto>> FiltrarAsync(string? razaoSocial, string? cnpj)
         {
-            razaoSocial = razaoSocial == "null" ? null : razaoSocial;
-            cnpj = cnpj == "null" ? null : cnpj;
-
-            if (!string.IsNullOrEmpty(cnpj))
-            {
-                cnpj = cnpj.Substring(0, 10) + '/' + cnpj.Substring(11);
-            }
-            var result = _context.Clientes.Include(c => c.Projetos).AsQueryable();
-
-            if (!string.IsNullOrEmpty(razaoSocial))
-            {
-                result = result.Where(x => EF.Functions.Like(x.RazaoSocial, $"%{razaoSocial}%"));
-            }
-
-            if (!string.IsNullOrEmpty(cnpj))
-            {
-                 result = result.Where(x => EF.Functions.Like(x.Cnpj, $"%{cnpj}%"));
-            }
-
-            return result.ToList();
+           return _mapper.Map<IEnumerable<ClienteDto>>(await _repository.filtrarClientes(razaoSocial, cnpj));
         }
 
-        public Cliente insert(Cliente entity)
+        public async Task<ClienteDtoCreateResult> InsertAsync(ClienteDtoCreate cliente)
         {
-            if (entity != null)
+            if (cliente != null)
             {
-                var result = _clienteRepository.insert(entity);
+                var model = _mapper.Map<ClienteModel>(cliente);
+                var entity = _mapper.Map<ClienteEntity>(model);
+                var result = _mapper.Map<ClienteDtoCreateResult>(await _repository.InsertAsync(entity));
                 return result;
             }
             return null;
         }
 
-        public IEnumerable<Cliente> listarClientes()
+        public async Task<IEnumerable<ClienteDto>> ListarAsync()
         {
-            return _context.Clientes.Include(x => x.Projetos).ToList().OrderBy(x => x.RazaoSocial);
+            return  _mapper.Map<IEnumerable<ClienteDto>>(await _repository.GetAll());
         }
 
-        public IEnumerable<ClienteListSimple> ListaSimples()
+        public async Task<IEnumerable<ClienteDtoSimple>> ListaSimplesAsync()
         {
-            var result = new List<ClienteListSimple>();
-            var clientes = _context.Clientes.ToList();
-            clientes.ForEach(cliente =>
-            {
-                result.Add(_mapper.Map<ClienteListSimple>(cliente));
-            });
+            var result = await _repository.GetAll();
 
-            return result;
+            return _mapper.Map<IEnumerable<ClienteDtoSimple>>(result);
         }
 
-        public Cliente select(int id)
+        public async Task<ClienteDto> GetAsync(Guid id)
         {
-            if (id != null)
+            if (id != Guid.Empty)
             {
-                return _clienteRepository.select(id);
+                return _mapper.Map<ClienteDto>(await _repository.SelectAsync(id));
             }
             return null;
         }
 
-        public Cliente update(Cliente entity)
+        public async Task<ClienteDtoUpdateResult> UpdateAsync(Guid id, ClienteDtoUpdate cliente)
         {
-            if (entity.Id != null && entity != null)
+            if (id != Guid.Empty && cliente != null)
             {
-                var result = _clienteRepository.update(entity);
-                return result;
+                cliente.Id = id; 
+                var model = _mapper.Map<ClienteModel>(cliente);
+                var entity = _mapper.Map<ClienteEntity>(model);
+                var result = await _repository.UpdateAsync(id, entity);
+                return _mapper.Map<ClienteDtoUpdateResult>(result);
             }
             return null;
         }
