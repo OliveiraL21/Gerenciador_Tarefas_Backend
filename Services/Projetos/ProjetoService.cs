@@ -2,6 +2,7 @@
 using Data.Context;
 using Domain.Dtos.projeto;
 using Domain.Entidades;
+using Domain.Models;
 using Domain.Repositories;
 using Domain.Repository;
 using Domain.Services.Projetos;
@@ -38,32 +39,34 @@ namespace Services.Projetos
             return _mapper.Map<IEnumerable<ProjetoDtoListagem>>(await _repository.FiltrarAsync(projeto, clienteId, statusId));
         }
 
-        public List<ProjetoEntity> GetAll()
+        public async Task<IEnumerable<ProjetoDtoListagem>> GetAllAsync()
         {
-
-            var projetos = _context.Projetos.Include(x => x.Status).Include(c => c.Cliente).ToList();
-            return projetos;
+            return _mapper.Map<IEnumerable<ProjetoDtoListagem>>(await _repository.GetAll());
         }
 
-        public ProjetoEntity insert(ProjetoEntity entity)
+        public async Task<ProjetoDtoCreateResult> InsertAsync(ProjetoDtoCreate projeto)
         {
-            return entity != null ? _repository.insert(entity) : null;
+            var model = _mapper.Map<ProjetoModel>(projeto);
+            var entity = _mapper.Map<ProjetoEntity>(model);
+            return _mapper.Map<ProjetoDtoCreateResult>(await  _repository.InsertAsync(entity));
         }
 
-        public IEnumerable<ProjetoEntity> listaSimples()
+        public async Task<IEnumerable<ProjetoDtoSimple>> ListaSimplesAsync()
         {
-            var result = _context.Projetos.ToList();
-            return result;
+            var result = await _repository.GetAll();
+            return _mapper.Map<IEnumerable<ProjetoDtoSimple>>(result);
         }
 
-        public ProjetoEntity select(int id)
+        public async Task<ProjetoDto> SelectAsync(Guid id)
         {
-            return id != 0 ? _repository.select(id) : null;
+            return _mapper.Map<ProjetoDto>(await _repository.SelectAsync(id));
         }
 
-        public ProjetoEntity update(ProjetoEntity entity)
+        public async Task<ProjetoDtoUpdateResult> UpdateAsync(Guid id, ProjetoDtoUpdate projeto)
         {
-            return  entity != null ? _repository.update(entity) : null;
+            var model = _mapper.Map<ProjetoModel>(projeto);
+            var entity = _mapper.Map<ProjetoEntity>(model);
+            return  _mapper.Map<ProjetoDtoUpdateResult>(await _repository.UpdateAsync(id,entity));
         }
     }
 }

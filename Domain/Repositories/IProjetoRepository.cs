@@ -11,7 +11,6 @@ namespace Domain.Repositories
 {
     public interface IProjetoRepository :IRepository<ProjetoEntity>
     {
-        Task<IEnumerable<ProjetoEntity>> listaSimplesAsync();
         Task<IEnumerable<ProjetoEntity>> FiltrarAsync(Guid? projeto, Guid? clienteId, Guid? statusId);
         Task<IEnumerable<ProjetoEntity>> GetAll();
     }

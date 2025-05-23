@@ -47,21 +47,16 @@ namespace Data.Implementation
             }
         }
 
-        Task<IEnumerable<ProjetoEntity>> IProjetoRepository.GetAll()
+        async Task<IEnumerable<ProjetoEntity>> IProjetoRepository.GetAll()
         {
             try
             {
-
+                return await _dataSet.Include(p => p.Status).Include(p => p.Cliente).ToListAsync();
             }
             catch
             {
                 throw;
             }
-        }
-
-        Task<IEnumerable<ProjetoEntity>> IProjetoRepository.listaSimplesAsync()
-        {
-            throw new NotImplementedException();
         }
     }
 }
