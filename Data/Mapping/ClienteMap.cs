@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.ModelMapping
+namespace Data.Mapping
 {
-    public class ClienteMap : IEntityTypeConfiguration<Cliente>
+    public class ClienteMap : IEntityTypeConfiguration<ClienteEntity>
     {
-        public void Configure(EntityTypeBuilder<Cliente> builder)
+        public void Configure(EntityTypeBuilder<ClienteEntity> builder)
         {
             builder.ToTable("Clientes");
 

@@ -1,4 +1,4 @@
-﻿using Data.ModelMapping;
+﻿using Data.Mapping;
 using Domain.Entidades;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,11 +11,11 @@ namespace Data.Context
 {
     public class MyContext : DbContext
     {
-        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<UsuarioEntity> Usuarios { get; set; }
 
         public DbSet<ProjetoEntity> Projetos { get; set; }
 
-        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<ClienteEntity> Clientes { get; set; }
 
         public DbSet<TarefaEntity> Tarefas { get; set; }
 
@@ -28,9 +28,9 @@ namespace Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Usuario>(new UsuarioMap().Configure);
+            modelBuilder.Entity<UsuarioEntity>(new UsuarioMap().Configure);
             modelBuilder.Entity<ProjetoEntity>(new ProjetoMap().Configure);
-            modelBuilder.Entity<Cliente>(new ClienteMap().Configure);
+            modelBuilder.Entity<ClienteEntity>(new ClienteMap().Configure);
             modelBuilder.Entity<TarefaEntity>(new TarefaMap().Configure); 
             modelBuilder.Entity<StatusEntity>(new StatusMap().Configure);
             modelBuilder.Entity<StatusEntity>().HasData(new StatusEntity() { Id = Guid.NewGuid(), Descricao = "Ativo" });

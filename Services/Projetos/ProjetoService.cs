@@ -1,5 +1,8 @@
-﻿using Data.Context;
+﻿using AutoMapper;
+using Data.Context;
+using Domain.Dtos.projeto;
 using Domain.Entidades;
+using Domain.Repositories;
 using Domain.Repository;
 using Domain.Services.Projetos;
 using Microsoft.EntityFrameworkCore;
@@ -13,52 +16,26 @@ namespace Services.Projetos
 {
     public class ProjetoService : IProjetoService
     {
-        private readonly IRepository<ProjetoEntity> _repository;
-        private readonly MyContext _context;
-        public ProjetoService(IRepository<ProjetoEntity> repository, MyContext context)
+        private readonly IProjetoRepository _repository;
+        private readonly IMapper _mapper;
+        public ProjetoService(IProjetoRepository repository, IMapper mapper)
         {
             _repository = repository;
-            _context = context;
+            _mapper = mapper;
         }
-        public double CalcularValorTotal(TimeSpan total_horas)
+        public Task<double> CalcularValorTotalAsync(TimeSpan total_horas)
         {
             throw new NotImplementedException();
         }
 
-        public bool delete(int id)
+        public Task<bool> DeleteAsync(Guid id)
         {
-            var result = _repository.delete(id);
-            return result;
+            return _repository.DeleteAsync(id);
         }
 
-        public IEnumerable<ProjetoEntity> FiltrarProjetos(int? projeto, int? clienteId, int? statusId)
+        public async Task<IEnumerable<ProjetoDtoListagem>> FiltrarAsync(Guid? projeto, Guid? clienteId, Guid? statusId)
         {
-            var projetoId = projeto == null || projeto == 0 ? null : projeto;
-            var cliente = clienteId == null || clienteId == 0 ? null : clienteId;
-            var status = statusId == null || statusId == 0 ? null : statusId;
-
-            if (projetoId != null && cliente == null && status == null)
-            {
-                var projetos = _context.Projetos.Where(x => x.Id == projetoId).Include(s => s.Status).Include(c => c.Cliente).ToList();
-                return projetos;
-            }
-
-            if (projetoId == null && cliente != null && status == null)
-            {
-                var projetos = _context.Projetos.Where(x => x.ClienteId == cliente).Include(s => s.Status).Include(c => c.Cliente).ToList();
-                return projetos;
-            }
-
-            if (projetoId == null && cliente == null && status != null)
-            {
-                var projetos = _context.Projetos.Where(x => x.StatusId == status).Include(s => s.Status).Include(c => c.Cliente).ToList();
-                return projetos;
-            }
-            else
-            {
-                var projetos = _context.Projetos.Include(x => x.Status).Include(c => c.Cliente).ToList();
-                return projetos;
-            }
+            return _mapper.Map<IEnumerable<ProjetoDtoListagem>>(await _repository.FiltrarAsync(projeto, clienteId, statusId));
         }
 
         public List<ProjetoEntity> GetAll()

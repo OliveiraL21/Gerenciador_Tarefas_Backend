@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.ModelMapping
+namespace Data.Mapping
 {
-    public class UsuarioMap : IEntityTypeConfiguration<Usuario>
+    public class UsuarioMap : IEntityTypeConfiguration<UsuarioEntity>
     {
-        public void Configure(EntityTypeBuilder<Usuario> builder)
+        public void Configure(EntityTypeBuilder<UsuarioEntity> builder)
         {
             builder.HasKey(u => u.Id);
             builder.Property(u => u.Id);
