@@ -15,6 +15,18 @@ namespace CrossCutting.Mapping
         {
             CreateMap<ClienteModel, ClienteEntity>()
                 .ReverseMap();
+
+            CreateMap<StatusModel, StatusEntity>() 
+                .ReverseMap();
+
+            CreateMap<TarefaModel, TarefaEntity>()
+                .ReverseMap();
+
+            CreateMap<ProjetoModel, ProjetoEntity>()
+                .ReverseMap();
+
+            CreateMap<UserModel, UsuarioEntity>()
+                .ReverseMap();
         }
     }
 }

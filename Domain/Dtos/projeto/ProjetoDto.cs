@@ -1,21 +1,24 @@
 ﻿using Domain.Dtos.cliente;
 using Domain.Dtos.status;
-using Domain.Entidades;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Domain.Dtos.projeto
 {
-    public class ProjetoDtoListagem
+    public class ProjetoDto
     {
         public Guid Id { get; set; }
 
         public string Descricao { get; set; }
 
-        public StatusDto status { get; set; }
-
         public string DataInicio { get; set; }
 
         public string DataFim { get; set; }
+
+        public StatusDto Status { get; set; }
 
         public ClienteDto Cliente { get; set; }
     }

@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Domain.Entidades
 {
-    public class CustomIdentityUser : IdentityUser<int>
+    public class CustomIdentityUser : IdentityUser<Guid>
     {
         public CustomIdentityUser() : base()
         {
             AccessFailedCount = 0;
         }
-
+        
         public string? ProfileImageUrl { get; set; }
 
     }

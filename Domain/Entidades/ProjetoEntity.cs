@@ -10,19 +10,19 @@ namespace Domain.Entidades
     {
         public string Descricao { get; set; }
 
-        public DateTimeOffset DataInicio { get; set; }
+        public DateTime DataInicio { get; set; }
 
-        public DateTimeOffset DataFim { get; set; }
+        public DateTime DataFim { get; set; }
 
-        public int StatusId { get; set; }
+        public Guid StatusId { get; set; }
 
         public StatusEntity Status { get; set; }
 
-        public int ClienteId { get; set; }
+        public Guid ClienteId { get; set; }
 
-        public  Cliente Cliente { get; set; }
+        public  ClienteEntity Cliente { get; set; }
 
-        public List<TarefaEntity> Tarefas { get; set; }
+        public IEnumerable<TarefaEntity> Tarefas { get; set; }
 
     }
 }

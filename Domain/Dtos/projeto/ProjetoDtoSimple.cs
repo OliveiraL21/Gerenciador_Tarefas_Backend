@@ -1,8 +1,10 @@
-﻿namespace Application.DTO.Projetos
+﻿using System;
+
+namespace Domain.Dtos.projeto
 {
     public class ProjetoDtoSimple
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Descricao { get; set; }
     }
 }

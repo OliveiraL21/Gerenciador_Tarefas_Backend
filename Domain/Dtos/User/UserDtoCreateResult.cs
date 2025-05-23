@@ -7,20 +7,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Dtos.User
 {
-    public class UserDtoUpdate 
+    public class UserDtoCreateResult
     {
-        [Required]
         public Guid Id { get; set; }
-
-        [Required(ErrorMessage = "O campo username é obrigatório")]
         public string username { get; set; }
-
-        [Required(ErrorMessage = "O campo e-mail é obrigatório")]
         public string Email { get; set; }
-
         public string phoneNumber { get; set; }
-
         public string profileImageUrl { get; set; }
     }
 }
-

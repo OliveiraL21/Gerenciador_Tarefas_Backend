@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Dtos.User
 {
-    public class UserDtoUpdate 
+    public class UserDtoCreate
     {
-        [Required]
-        public Guid Id { get; set; }
 
         [Required(ErrorMessage = "O campo username é obrigatório")]
         public string username { get; set; }
@@ -23,4 +21,3 @@ namespace Domain.Dtos.User
         public string profileImageUrl { get; set; }
     }
 }
-

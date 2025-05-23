@@ -1,11 +1,13 @@
-﻿using Domain.Entidades;
+﻿using Domain.Dtos.cliente;
+using Domain.Dtos.status;
+using Domain.Entidades;
 using System;
 
-namespace Application.DTO.Projetos
+namespace Domain.Dtos.projeto
 {
     public class ProjetoDtoUpdate
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Descricao { get; set; }
 
@@ -13,8 +15,8 @@ namespace Application.DTO.Projetos
 
         public string DataFim { get; set; }
 
-        public StatusEntity Status { get; set; }
+        public StatusDto Status { get; set; }
 
-        public Cliente Cliente { get; set; }
+        public ClienteDto Cliente { get; set; }
     }
 }
