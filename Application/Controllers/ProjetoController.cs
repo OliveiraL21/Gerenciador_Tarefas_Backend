@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.Net;
 using System;
 using AutoMapper;
-using Application.DTO.Projetos;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using Domain.Dtos.projeto;
 
 namespace Application.Controllers
 {
@@ -15,36 +16,23 @@ namespace Application.Controllers
     public class ProjetoController : ControllerBase
     {
      
-            private readonly IProjetoService _projetoService;
+            private readonly IProjetoService _service;
             private readonly IMapper _mapper;
             public ProjetoController(IProjetoService projetoService, IMapper mapper)
             {
-                _projetoService = projetoService;
+                _service = projetoService;
                 _mapper = mapper;
             }
 
             [HttpGet]
             [Route("/lista/projetos")]
             [Authorize(Roles = "admin, regular")]
-        public IActionResult Lista()
+        public async Task<IActionResult> Lista()
             {
                 try
                 {
-                    var projetos = _projetoService.GetAll();
-                    var result = new List<ProjetoDtoListagem>();
-                    foreach (var projeto in projetos)
-                    {
-                        var projetoResult = new ProjetoDtoListagem() {
-                            Id = projeto.Id,
-                            Descricao = projeto.Descricao,
-                            Data_Inicio = projeto.DataInicio.ToString("dd/MM/yyyy"),
-                            Data_Fim = projeto.DataFim.ToString("dd/MM/yyyy"),
-                            status = projeto.Status,
-                            Cliente = projeto.Cliente
-                        };
-
-                        result.Add(projetoResult);
-                    }
+                    var result = await _service.GetAllAsync();
+                   
                     if (result == null)
                     {
                         return BadRequest();
@@ -60,7 +48,7 @@ namespace Application.Controllers
             [HttpGet]
             [Route("/lista_simples")]
             [Authorize(Roles = "admin, regular")]
-            public IActionResult listaSimples()
+            public async Task<IActionResult> listaSimples()
             {
                 try
                 {
@@ -69,13 +57,7 @@ namespace Application.Controllers
                         return BadRequest(ModelState);
                     }
 
-                    var projetos = _projetoService.listaSimples();
-                    var result = new List<ProjetoDtoSimple>();
-                    foreach (var projeto in projetos)
-                    {
-                        var projetoSimplesDTO = _mapper.Map<ProjetoDtoSimple>(projeto);
-                        result.Add(projetoSimplesDTO);
-                    }
+                    var result = await _service.ListaSimplesAsync();
 
                     if (result == null)
                     {
@@ -92,7 +74,7 @@ namespace Application.Controllers
             [HttpGet]
             [Route("filtrar_projetos/{projeto}/{cliente}/{status}")]
             [Authorize(Roles = "admin, regular")]
-            public IActionResult Filtrar(int? projeto, int? cliente, int? status)
+            public async Task<IActionResult> Filtrar(Guid? projeto, Guid? cliente, Guid? status)
             {
                 try
                 {
@@ -101,24 +83,7 @@ namespace Application.Controllers
                         return BadRequest(ModelState);
                     }
 
-                    var projetos = _projetoService.FiltrarProjetos(projeto, cliente, status);
-                    var result = new List<ProjetoDtoListagem>();
-
-                    foreach (var item in projetos)
-                    {
-
-                    var projetoDTO = new ProjetoDtoListagem()
-                    {
-                        Id = item.Id,
-                        Descricao = item.Descricao,
-                        Data_Inicio = item.DataInicio.ToString("dd/MM/yyyy"),
-                        Data_Fim = item.DataFim.ToString("dd/MM/yyyy"),
-                        status = item.Status,
-                        Cliente = item.Cliente
-                    };
-
-                    result.Add(projetoDTO);
-                    }
+                    var result = await _service.FiltrarAsync(projeto, cliente, status);
 
                     if (result == null)
                     {
@@ -136,7 +101,7 @@ namespace Application.Controllers
             [HttpPost]
             [Route("/projeto/create")]
             [Authorize(Roles = "admin, regular")]
-            public IActionResult create([FromBody] ProjetoEntity projeto)
+            public async Task<IActionResult> create([FromBody] ProjetoDtoCreate projeto)
             {
                 try
                 {
@@ -144,12 +109,7 @@ namespace Application.Controllers
                     {
                         return BadRequest(ModelState);
                     }
-                    projeto.ClienteId = projeto.Cliente.Id;
-                    projeto.Cliente = null;
-                    projeto.StatusId = projeto.Status.Id;
-                    projeto.Status = null;
-
-                    var result = _projetoService.insert(projeto);
+                    var result = await _service.InsertAsync(projeto);
 
                     if (result == null)
                     {
@@ -166,7 +126,7 @@ namespace Application.Controllers
             [HttpPut]
             [Route("/projeto/update/{id}")]
             [Authorize(Roles = "admin, regular")]
-            public IActionResult update(int id, [FromBody] ProjetoDtoUpdate projetoDto)
+            public async Task<IActionResult> update(Guid id, [FromBody] ProjetoDtoUpdate projeto)
             {
                 try
                 {
@@ -176,9 +136,7 @@ namespace Application.Controllers
 
                     }
 
-                    projetoDto.Id = id;
-                    var projeto = _mapper.Map<ProjetoEntity>(projetoDto);
-                    var result = _projetoService.update(projeto);
+                    var result = await _service.UpdateAsync(id,projeto);
 
                     if (result == null)
                     {
@@ -196,7 +154,7 @@ namespace Application.Controllers
             [HttpGet]
             [Route("/projeto/details/{id}")]
             [Authorize(Roles = "admin, regular")]
-            public IActionResult details(int id)
+            public async Task<IActionResult> details(Guid id)
             {
                 try
                 {
@@ -205,7 +163,7 @@ namespace Application.Controllers
                         return BadRequest();
                     }
 
-                    var result = _projetoService.select(id);
+                    var result = await _service.SelectAsync(id);
 
                     if (result == null)
                     {
@@ -223,23 +181,22 @@ namespace Application.Controllers
             [HttpDelete]
             [Route("/projeto/delete/{id}")]
             [Authorize(Roles = "admin, regular")]
-            public IActionResult delete(int id)
+            public IActionResult delete(Guid id)
             {
                 try
                 {
-                    if (id == 0)
+                    if (id == Guid.Empty)
                     {
                         return NotFound();
                     }
-
                     if (!ModelState.IsValid)
                     {
                         return BadRequest();
                     }
 
-                    var result = _projetoService.delete(id);
+                    var result = _service.DeleteAsync(id);
 
-                    if (result == false)
+                    if (result == null)
                     {
                         return BadRequest(result);
                     }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
+using Domain.Dtos.cliente;
 
 namespace Application.Controllers
 {
@@ -103,7 +104,7 @@ namespace Application.Controllers
         [HttpPost]
         [Route("/create")]
         [Authorize(Roles = "admin, regular")]
-        public async Task<IActionResult> Create([FromBody] ClienteEntity cliente)
+        public async Task<IActionResult> Create([FromBody] ClienteDtoCreate cliente)
         {
             try
             {
@@ -129,7 +130,7 @@ namespace Application.Controllers
         [HttpPut]
         [Route("/update/{id}")]
         [Authorize(Roles = "admin, regular")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] ClienteEntity cliente)
+        public async Task<IActionResult> Update(Guid id, [FromBody] ClienteDtoUpdate cliente)
         {
             try
             {
