@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entidades
+namespace Domain.Dtos.dashboard
 {
-    public class DashboardResultEntity
+    public class DashboardDtoResult
     {
         public int Segunda { get; set; } = 0;
         public int Terca { get; set; } = 0;

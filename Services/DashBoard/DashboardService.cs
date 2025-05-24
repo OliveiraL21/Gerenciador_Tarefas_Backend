@@ -1,5 +1,5 @@
 ﻿using Data.Context;
-using Domain.Entidades;
+using Domain.Dtos.dashboard;
 using Domain.Services.Dashboard;
 using System;
 using System.Collections.Generic;
@@ -18,9 +18,9 @@ namespace Services.DashBoard
             _context = context;
         }
 
-        public DashboardEntity CarregarDadosIniciais()
+        public DashboardDto CarregarDadosIniciais()
         {
-           var result = new DashboardEntity();
+           var result = new DashboardDto();
 
             result.ProjetosAtivos = _context.Projetos.Count();
 

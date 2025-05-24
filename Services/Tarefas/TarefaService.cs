@@ -1,5 +1,7 @@
 ﻿using Data.Context;
+using Domain.Dtos.dashboard;
 using Domain.Entidades;
+using Domain.Repositories;
 using Domain.Repository;
 using Domain.Services.Tarefas;
 using Microsoft.EntityFrameworkCore;
@@ -14,14 +16,13 @@ namespace Services.Tarefas
 {
     public class TarefaService : ITarefaService
     {
-        private readonly MyContext _context;
+        private readonly ITarefaRepository _repository;
         private readonly IRepository<TarefaEntity> _tarefaRepository;
         private readonly IRepository<StatusEntity> _statusRepository;
         private List<TarefaEntity> tarefas = new List<TarefaEntity>();
-        public TarefaService(MyContext context, IRepository<TarefaEntity> tarefaRepository, IRepository<StatusEntity> statusRepository)
+        public TarefaService(ITarefaRepository repository, IRepository<StatusEntity> statusRepository)
         {
-            _context= context;
-            _tarefaRepository = tarefaRepository;
+            _repository = repository;
             _statusRepository = statusRepository;
         }
         public string calcularHorasTotais(DateTime data)
@@ -48,11 +49,11 @@ namespace Services.Tarefas
             }
         }
 
-        public bool delete(int id)
+        public async Task<bool> delete(Guid id)
         {
-            if (id != 0)
+            if (id != Guid.Empty)
             {
-                return _tarefaRepository.delete(id);
+                return await _tarefaRepository.DeleteAsync(id);
             }
             return false;
         }
@@ -97,12 +98,12 @@ namespace Services.Tarefas
             }
         }
 
-        public TarefaEntity insert(TarefaEntity entity)
+        public async Task<TarefaEntity> insert(TarefaEntity entity)
         {
             if (entity != null)
             {
                 entity.Status = null;
-                return _tarefaRepository.insert(entity);
+                return await _tarefaRepository.InsertAsync(entity);
             }
             return null;
         }
@@ -127,7 +128,7 @@ namespace Services.Tarefas
             return _tarefaRepository.update(entity);
         }
 
-        private double SomarHoras(DashboardResultEntity dashboardEntity)
+        private double SomarHoras(DashboardDtoResult dashboardEntity)
         {
             if (dashboardEntity == null)
             {
@@ -140,13 +141,13 @@ namespace Services.Tarefas
             return total;
         }
 
-        public DashboardResultEntity ListaTarefaByProjeto(int projeto)
+        public DashboardDtoResult ListaTarefaByProjeto(int projeto)
         {
             var today = DateTime.Now;
 
             var dayWeek = today.DayOfWeek;
 
-            var result = new DashboardResultEntity();
+            var result = new DashboardDtoResult();
             
 
 

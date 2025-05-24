@@ -1,4 +1,4 @@
-﻿using Domain.Entidades;
+﻿using Domain.Dtos.dashboard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +9,6 @@ namespace Domain.Services.Dashboard
 {
     public interface IDashboardService
     {
-        DashboardEntity CarregarDadosIniciais();
+        DashboardDto CarregarDadosIniciais();
     }
 }
