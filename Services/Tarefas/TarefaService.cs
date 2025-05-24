@@ -1,5 +1,6 @@
 ﻿using Data.Context;
 using Domain.Dtos.dashboard;
+using Domain.Dtos.tarefas;
 using Domain.Entidades;
 using Domain.Repositories;
 using Domain.Repository;
@@ -49,7 +50,7 @@ namespace Services.Tarefas
             }
         }
 
-        public async Task<bool> delete(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             if (id != Guid.Empty)
             {
@@ -59,7 +60,7 @@ namespace Services.Tarefas
         }
 
         
-        public List<TarefaEntity> filtrarTarefas(string? descricao, string? dataInicio, string? dataFim, int? projetoId)
+        public List<TarefaEntity> FiltrarAsync(string? descricao, string? dataInicio, string? dataFim, Guid? projetoId)
         {
             try
             {
@@ -98,7 +99,7 @@ namespace Services.Tarefas
             }
         }
 
-        public async Task<TarefaEntity> insert(TarefaEntity entity)
+        public async Task<TarefaDtoCreateResult> InsertAsync(TarefaDtoCreate entity)
         {
             if (entity != null)
             {
@@ -108,10 +109,9 @@ namespace Services.Tarefas
             return null;
         }
 
-        public IEnumerable<TarefaEntity> listaTarefas()
+        public async Task<IEnumerable<TarefaEntity>> listaTarefas()
         {
-            var result = _context.Tarefas.Include(x => x.Projeto).Include(s => s.Status).ToList();
-            return result;
+            return _mapper.Map<IEnumerable<TarefaDto>>(await _repository.GetAllAsync())
         }
 
         public TarefaEntity select(int id)

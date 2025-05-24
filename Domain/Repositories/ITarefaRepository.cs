@@ -12,6 +12,7 @@ namespace Domain.Repositories
     {
         Task<string> calcularHorasTotaisAsync(DateTime data);
         Task<IEnumerable<TarefaEntity>> FiltrarAsync(string descricao, string dataInicio, string dataFim, Guid? projetoId);
+        Task<IEnumerable<TarefaEntity>> GetAllAsync();
 
     }
 }
