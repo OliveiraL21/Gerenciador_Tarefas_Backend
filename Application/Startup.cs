@@ -171,7 +171,6 @@ namespace Application
 
             }
 
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 

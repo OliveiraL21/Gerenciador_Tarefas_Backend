@@ -109,19 +109,19 @@ namespace UserApplication
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && env.IsProduction())
                 {
                     app.UseSwaggerUI(c => c.SwaggerEndpoint("/users/swagger/v1/swagger.json", "UserApplication v1"));
                 }
-                else
+                else if (env.IsDevelopment())
                 {
                     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UserApplication v1"));
                 }
-               
+
             }
 
             app.UseCors(MyAllowSpecificOrigins);
-            app.UseHttpsRedirection();
+
 
             app.UseRouting();
 
