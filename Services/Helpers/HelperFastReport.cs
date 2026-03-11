@@ -6,6 +6,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,6 +17,10 @@ namespace Services.Helpers
         public static WebReport WebReport(string nomeDoRelatorioFrx)
         {
             var result = new WebReport();
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                nomeDoRelatorioFrx = nomeDoRelatorioFrx.Replace("\\", "/");
+            }
             result.Report.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, nomeDoRelatorioFrx));
             return result;
         }
@@ -32,7 +37,7 @@ namespace Services.Helpers
             }
         }
 
-     
+
         public static DataTable GetTable<TEntity>(IEnumerable<TEntity> table, string name) where TEntity : class
         {
             var offset = 78;

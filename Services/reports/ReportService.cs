@@ -37,7 +37,7 @@ namespace Services.reports
         private TimeSpan CalcularHorasDoProjeto(IEnumerable<TarefaEntity> tarefas)
         {
             TimeSpan totalHora = TimeSpan.Zero;
-            foreach(var tarefa in tarefas)
+            foreach (var tarefa in tarefas)
             {
                 totalHora += tarefa.Duracao.TimeOfDay;
             }
@@ -55,10 +55,10 @@ namespace Services.reports
                 return total;
             }
             return 0;
-            
+
         }
 
-        public async Task<byte[]>OrcamentoPorProjeto(Guid orcamentoId)
+        public async Task<byte[]> OrcamentoPorProjeto(Guid orcamentoId)
         {
             try
             {
@@ -73,11 +73,11 @@ namespace Services.reports
                 List<ClienteEntity> clientes = [cliente];
                 List<EmpresaEntity> empresas = [empresa];
 
+                var reportPath = Path.Combine("Services", "reports", "OrcamentoPorProjeto.frx");
+                var webReport = HelperFastReport.WebReport(reportPath);
 
-                var webReport = HelperFastReport.WebReport("reports\\OrcamentoPorProjeto.frx");
 
-               
-                var orcamentoTable = HelperFastReport.GetTable(orcamentos,"OrcamentoPorProjeto");
+                var orcamentoTable = HelperFastReport.GetTable(orcamentos, "OrcamentoPorProjeto");
                 var clienteTable = HelperFastReport.GetTable(clientes, "Clientes");
                 var empresaTable = HelperFastReport.GetTable(empresas, "Empresa");
                 var produtosOrcamentoTable = HelperFastReport.GetTable(orcamento.Produtos, "ProdutosOrcamentoPorProjeto");
@@ -90,13 +90,14 @@ namespace Services.reports
 
 
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw;
             }
         }
 
-        public async Task<byte[]> OrcamentoHora(Guid orcamentoId) 
+        public async Task<byte[]> OrcamentoHora(Guid orcamentoId)
         {
             try
             {
@@ -105,8 +106,8 @@ namespace Services.reports
                 var cliente = await _clienteRepository.SelectAsync(orcamento.ClienteId);
                 var orcamentoDto = _mapper.Map<OrcamentoHoraDtoReport>(orcamento);
                 orcamentoDto.CreateAt = orcamento.CreateAt.Value.ToString("dd/MM/yyyy");
-
-                var webReport = HelperFastReport.WebReport("reports\\orcamentoHora.frx");
+                var reportPath = Path.Combine("Services", "reports", "orcamentoHora.frx");
+                var webReport = HelperFastReport.WebReport(reportPath);
 
                 List<OrcamentoHoraDtoReport> orcamentos = [orcamentoDto];
                 List<ClienteEntity> clientes = [cliente];
@@ -123,7 +124,8 @@ namespace Services.reports
                 webReport.Report.RegisterData(servicosTable, "Servico");
                 return HelperFastReport.ExportPdf(webReport);
 
-            } catch
+            }
+            catch
             {
                 throw;
             }
@@ -143,7 +145,8 @@ namespace Services.reports
                 projeto.TotalHoras = $"{hour:D2}:{minute:D2}";
                 projeto.ValorTotalProjeto = CalcularValorDoProjeto(timeTotal.TotalHours);
 
-                var webReport = HelperFastReport.WebReport("reports\\relatorio-servicos-prestados.frx");
+                var reportPath = Path.Combine("Services", "reports", "relatorio-servicos-prestados.frx");
+                var webReport = HelperFastReport.WebReport(reportPath);
 
                 List<ProjetoEntity> projetoList = [projeto];
                 var projetoTable = HelperFastReport.GetTable<ProjetoEntity>(projetoList, "Projetos");
@@ -159,9 +162,10 @@ namespace Services.reports
                 webReport.Report.RegisterData(tarefasTable, "Tarefas");
                 return HelperFastReport.ExportPdf(webReport);
 
-              
 
-            } catch (Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -182,7 +186,8 @@ namespace Services.reports
                 projeto.TotalHoras = $"{hour:D2}:{minute:D2}";
                 projeto.ValorTotalProjeto = CalcularValorDoProjeto(timeTotal.TotalHours);
 
-                var webReport = HelperFastReport.WebReport("reports\\relatorio-servicos-prestados-periodo.frx");
+                var reportPath = Path.Combine("Services", "reports", "relatorio-servicos-prestados-periodo.frx");
+                var webReport = HelperFastReport.WebReport(reportPath);
 
                 List<ProjetoEntity> projetoList = [projeto];
                 var projetoTable = HelperFastReport.GetTable<ProjetoEntity>(projetoList, "Projetos");
