@@ -160,14 +160,15 @@ namespace Application
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && env.IsProduction())
                 {
                     app.UseSwaggerUI(c => c.SwaggerEndpoint("/application/swagger/v1/swagger.json", "Application v1"));
-                } else
+                }
+                else
                 {
                     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Application v1"));
                 }
-                
+
             }
 
             app.UseHttpsRedirection();
